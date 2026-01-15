@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elirox Bot - BOT Tự Động Giao Dịch 24/7</title>
     <meta name="description" content="BOT tự động giao dịch 24/7. Không cần code, không cần kinh nghiệm. Dùng thử miễn phí $10,000 demo ngay.">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/mettatuan/elirox/refs/heads/main/elirox%20favi.jfif">
     <style>
         * {
             margin: 0;
@@ -56,7 +57,7 @@
         .logo-icon {
             width: 32px;
             height: 32px;
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -89,7 +90,7 @@
         }
         
         .btn-primary {
-            background: #10B981;
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
             color: #ffffff;
             padding: 12px 24px;
             border-radius: 8px;
@@ -97,12 +98,13 @@
             font-weight: 600;
             transition: all 0.3s ease;
             display: inline-block;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
         
         .btn-primary:hover {
-            background: #059669;
+            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         }
         
         .link-login {
@@ -157,8 +159,8 @@
         
         /* Hero Section - UPDATED LAYOUT */
         .hero {
-            padding: 140px 0 80px;
-            background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);
+            padding: 120px 0 60px;
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
         }
         
         .hero-content {
@@ -170,21 +172,21 @@
         .hero-text h1 {
             font-size: 42px;
             font-weight: 700;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             line-height: 1.3;
         }
         
         .hero-text p {
             font-size: 18px;
             color: #6B7280;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
         
         .trust-badges {
             display: flex;
             gap: 24px;
-            margin-top: 24px;
-            margin-bottom: 48px;
+            margin-top: 20px;
+            margin-bottom: 40px;
             font-size: 14px;
             color: #6B7280;
             justify-content: center;
@@ -199,7 +201,7 @@
         
         .hero-visual {
             text-align: center;
-            margin-top: 48px;
+            margin-top: 32px;
         }
         
         .mockup-placeholder {
@@ -208,7 +210,7 @@
             margin: 0 auto;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
         }
         
         .mockup-placeholder img {
@@ -219,7 +221,7 @@
         
         /* Sections */
         section {
-            padding: 80px 0;
+            padding: 60px 0;
         }
         
         .section-alt {
@@ -228,13 +230,13 @@
         
         .section-header {
             text-align: center;
-            margin-bottom: 64px;
+            margin-bottom: 48px;
         }
         
         .section-header h2 {
             font-size: 36px;
             font-weight: 700;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         
         .section-header p {
@@ -246,7 +248,7 @@
         .steps {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 48px;
+            gap: 32px;
         }
         
         .step {
@@ -256,7 +258,7 @@
         .step-number {
             width: 64px;
             height: 64px;
-            background: #10B981;
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -264,12 +266,13 @@
             justify-content: center;
             font-size: 24px;
             font-weight: 700;
-            margin: 0 auto 24px;
+            margin: 0 auto 16px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
         
         .step h3 {
             font-size: 20px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         
         .step p {
@@ -293,8 +296,8 @@
         .strategy-icon {
             width: 56px;
             height: 56px;
-            background: #ECFDF5;
-            color: #10B981;
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            color: #2563EB;
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -309,7 +312,7 @@
         }
         
         .strategy-card h4 {
-            color: #10B981;
+            color: #3B82F6;
             margin-bottom: 16px;
             font-size: 14px;
             text-transform: uppercase;
@@ -401,13 +404,13 @@
         }
         
         .comparison-highlight {
-            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
-            color: #065F46;
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            color: #1E40AF;
             font-weight: 600;
         }
         
         .comparison-header .comparison-highlight {
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
             color: white;
         }
         
@@ -416,7 +419,7 @@
         }
         
         .comparison-row:hover .comparison-highlight {
-            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+            background: linear-gradient(135deg, #BFDBFE 0%, #93C5FD 100%);
         }
         
         @media (max-width: 768px) {
@@ -443,23 +446,58 @@
         
         .faq-item {
             background: white;
-            padding: 24px;
+            padding: 0;
             border-radius: 12px;
             margin-bottom: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
         .faq-question {
             font-size: 18px;
             font-weight: 600;
-            margin-bottom: 12px;
+            padding: 24px;
             display: flex;
-            gap: 12px;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background: #F9FAFB;
+        }
+        
+        .faq-toggle {
+            font-size: 24px;
+            color: #3B82F6;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-left: 16px;
+        }
+        
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
         }
         
         .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
             color: #6B7280;
             line-height: 1.8;
+            padding: 0 24px;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 24px 24px 24px;
         }
         
         .faq-answer strong {
@@ -514,7 +552,7 @@
         .stat-value {
             font-size: 24px;
             font-weight: 700;
-            color: #10B981;
+            color: #3B82F6;
         }
         
         .stat-label {
@@ -545,38 +583,39 @@
         
         /* Final CTA */
         .final-cta {
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
             color: white;
             text-align: center;
-            padding: 80px 0;
+            padding: 60px 0;
         }
         
         .final-cta h2 {
             font-size: 36px;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
         }
         
         .btn-white {
             background: white;
-            color: #10B981;
+            color: #3B82F6;
             padding: 16px 32px;
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
             display: inline-block;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
         }
         
         .btn-white:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(255,255,255,0.3);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
         }
         
         .final-trust {
             display: flex;
             justify-content: center;
             gap: 32px;
-            margin-top: 32px;
+            margin-top: 24px;
             flex-wrap: wrap;
         }
         
@@ -584,14 +623,14 @@
         footer {
             background: #111827;
             color: #9CA3AF;
-            padding: 48px 0 24px;
+            padding: 40px 0 20px;
         }
         
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 32px;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
         
         .footer-column h4 {
@@ -608,7 +647,7 @@
         
         .footer-bottom {
             text-align: center;
-            padding-top: 24px;
+            padding-top: 20px;
             border-top: 1px solid #374151;
         }
         
@@ -664,7 +703,6 @@
                 
                 <div class="nav-actions">
                     <a href="https://click.eliroxlink.com/U2uaaCBz?click_id=2369&sub_id1=&webmaster_id=2369" class="btn-primary" target="_blank">Dùng Thử Miễn Phí</a>
-                    <a href="https://app.elirox.com/auth/signin" class="link-login" target="_blank">Đăng Nhập</a>
                 </div>
                 
                 <button class="mobile-toggle" id="mobileToggle">
@@ -680,7 +718,6 @@
                 <a href="#faq" class="mobile-nav-link">FAQ</a>
                 <a href="#results" class="mobile-nav-link">Kết Quả Thực Tế</a>
                 <a href="https://click.eliroxlink.com/U2uaaCBz?click_id=2369&sub_id1=&webmaster_id=2369" class="mobile-nav-link" target="_blank">Dùng Thử Miễn Phí</a>
-                <a href="https://app.elirox.com/auth/signin" class="mobile-nav-link" target="_blank">Đăng Nhập</a>
             </div>
         </div>
     </nav>
@@ -879,32 +916,47 @@
             </div>
             <div class="faq-list">
                 <div class="faq-item">
-                    <div class="faq-question">❓ Tiền của tôi có an toàn không? Bot có thể rút tiền không?</div>
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Tiền của tôi có an toàn không? Bot có thể rút tiền không?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
                     <div class="faq-answer">
                         <strong>Hoàn toàn an toàn.</strong> Tiền của bạn LUÔN LUÔN nằm ở tài khoản broker (Exness, XM, Doto...). Elirox kết nối qua API với quyền hạn hạn chế: CHỈ được mở/đóng lệnh giao dịch. KHÔNG THỂ rút tiền, chuyển tiền, thay đổi mật khẩu.
                     </div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">❓ Tôi không biết gì về trading, có dùng được không?</div>
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Tôi không biết gì về trading, có dùng được không?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
                     <div class="faq-answer">
                         <strong>Được!</strong> Elirox được thiết kế cho cả người mới 100%. Bạn không cần biết phân tích kỹ thuật, không cần lập trình, không cần ngồi xem chart 24/7. Chỉ cần chọn tài sản, chọn mức rủi ro (An Toàn/Cân Bằng/Tích Cực), bấm "Khởi Động". AI Preset tự động cấu hình tất cả cho bạn.
                     </div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">❓ Bot có đảm bảo lời 100% không?</div>
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Bot có đảm bảo lời 100% không?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
                     <div class="faq-answer">
                         <strong>KHÔNG.</strong> Không có hệ thống nào đảm bảo lời 100%. Trading luôn có rủi ro. Nhưng bot giúp bạn: loại bỏ cảm xúc (tham lam, sợ hãi), giao dịch theo quy tắc khoa học, quản lý rủi ro tự động, không bỏ lỡ cơ hội (chạy 24/7). Khuyến nghị: Luôn test trên demo account trước (miễn phí $10,000 ảo).
                     </div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">❓ Cần bao nhiêu vốn để bắt đầu?</div>
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Cần bao nhiêu vốn để bắt đầu?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
                     <div class="faq-answer">
                         <strong>Demo (Miễn phí):</strong> $0 - Bạn nhận $10,000 tiền ảo.<br>
                         <strong>Thật:</strong> Minimum $100-$200 (lot 0.01). Khuyến nghị: $500-$1,000 (an toàn hơn). Optimal: $2,000+ (đủ margin cho DCA nhiều lệnh).
                     </div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">❓ Tôi có thể tắt bot và rút tiền bất cứ lúc nào không?</div>
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Tôi có thể tắt bot và rút tiền bất cứ lúc nào không?</span>
+                        <span class="faq-toggle">▼</span>
+                    </div>
                     <div class="faq-answer">
                         <strong>CÓ. 100% kiểm soát.</strong> Bấm nút "Stop" trong app để tắt bot. Vào Settings → Cancel để hủy gói đăng ký. Không ràng buộc hợp đồng, không phí hủy. Rút tiền trực tiếp qua broker của bạn.
                     </div>
@@ -1033,6 +1085,22 @@
     </footer>
 
     <script>
+        // FAQ Toggle functionality
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const isActive = faqItem.classList.contains('active');
+            
+            // Close all other FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Toggle current item
+            if (!isActive) {
+                faqItem.classList.add('active');
+            }
+        }
+        
         // Mobile menu toggle
         const mobileToggle = document.getElementById('mobileToggle');
         const mobileMenu = document.getElementById('mobileMenu');
