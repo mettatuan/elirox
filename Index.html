@@ -3,909 +3,1189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elirox - Giao Dịch Forex Tự Động Thông Minh</title>
+    <title>Elirox Bot - BOT Tự Động Giao Dịch 24/7</title>
+    <meta name="description" content="BOT tự động giao dịch 24/7. Không cần code, không cần kinh nghiệm. Dùng thử miễn phí $10,000 demo ngay.">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        :root {
-            --primary: #7c3aed;
-            --primary-dark: #6d28d9;
-            --accent: #ec4899;
-            --dark-bg: #0f172a;
-            --text-light: #e2e8f0;
-            --text-muted: #94a3b8;
-            --success: #10b981;
-        }
-
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, var(--dark-bg) 0%, #1e293b 100%);
-            color: var(--text-light);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            color: #111827;
             line-height: 1.6;
-            overflow-x: hidden;
+            background: #ffffff;
         }
-
-        /* NAVBAR */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 2rem;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(124, 58, 237, 0.1);
-            position: sticky;
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
             top: 0;
-            z-index: 100;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 16px 0;
+            z-index: 1000;
         }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        nav .links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        nav a {
-            color: var(--text-light);
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: 0.95rem;
-        }
-
-        nav a:hover {
-            color: var(--primary);
-        }
-
-        .btn-signin {
-            background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-signin:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* HERO SECTION */
-        .hero {
+        
+        .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 6rem 2rem;
-            text-align: center;
-            position: relative;
-            z-index: 1;
+            padding: 0 24px;
         }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: 1.3rem;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border: none;
-            padding: 1rem 2.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px rgba(124, 58, 237, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-light);
-            border: 2px solid var(--primary);
-            padding: 0.9rem 2.4rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-secondary:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(124, 58, 237, 0.1);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            color: var(--primary);
-            padding: 0.5rem 1.2rem;
-            border-radius: 20px;
-            margin-bottom: 1.5rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        /* FORM SECTION */
-        .form-section {
-            max-width: 500px;
-            margin: 3rem auto 0;
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(124, 58, 237, 0.2);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .form-section h3 {
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 0.8rem;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            color: var(--text-light);
-            border-radius: 6px;
-            font-size: 0.95rem;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: rgba(15, 23, 42, 0.8);
-            box-shadow: 0 0 10px rgba(124, 58, 237, 0.2);
-        }
-
-        .form-group input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border: none;
-            color: white;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 0.5rem;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
-        }
-
-        .form-note {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        /* FEATURES SECTION */
-        .features {
-            max-width: 1200px;
-            margin: 5rem auto 0;
-            padding: 3rem 2rem;
-        }
-
-        .features h2 {
-            text-align: center;
-            font-size: 2.2rem;
-            margin-bottom: 3rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(124, 58, 237, 0.2);
-            padding: 2rem;
-            border-radius: 10px;
-            transition: all 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            background: rgba(30, 41, 59, 0.9);
-        }
-
-        .feature-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .feature-card h3 {
-            margin-bottom: 0.8rem;
-            font-size: 1.1rem;
-        }
-
-        .feature-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        /* BENEFITS SECTION */
-        .benefits {
-            max-width: 1000px;
-            margin: 5rem auto;
-            padding: 3rem 2rem;
-        }
-
-        .benefits h2 {
-            text-align: center;
-            font-size: 2.2rem;
-            margin-bottom: 3rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .benefit-item {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: rgba(30, 41, 59, 0.6);
-            border-left: 4px solid var(--primary);
-            border-radius: 6px;
-        }
-
-        .benefit-check {
-            color: var(--success);
-            font-size: 1.5rem;
-            flex-shrink: 0;
-            margin-top: 0.2rem;
-        }
-
-        .benefit-text h4 {
-            margin-bottom: 0.3rem;
-        }
-
-        .benefit-text p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        /* TESTIMONIALS SECTION */
-        .testimonials {
-            max-width: 1200px;
-            margin: 5rem auto;
-            padding: 3rem 2rem;
-        }
-
-        .testimonials h2 {
-            text-align: center;
-            font-size: 2.2rem;
-            margin-bottom: 3rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .testimonial-card {
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(124, 58, 237, 0.2);
-            padding: 1.5rem;
-            border-radius: 10px;
-        }
-
-        .stars {
-            color: #fbbf24;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .testimonial-text {
-            margin-bottom: 1rem;
-            font-style: italic;
-            color: var(--text-muted);
-        }
-
-        .testimonial-author {
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        /* FAQ SECTION */
-        .faq {
-            max-width: 800px;
-            margin: 5rem auto;
-            padding: 3rem 2rem;
-        }
-
-        .faq h2 {
-            text-align: center;
-            font-size: 2.2rem;
-            margin-bottom: 3rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .faq-item {
-            margin-bottom: 1rem;
-            border: 1px solid rgba(124, 58, 237, 0.2);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .faq-question {
-            background: rgba(30, 41, 59, 0.6);
-            padding: 1.2rem;
-            cursor: pointer;
+        
+        .nav-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s;
         }
-
-        .faq-question:hover {
-            background: rgba(30, 41, 59, 0.9);
-            border-color: var(--primary);
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+            text-decoration: none;
         }
-
-        .faq-toggle {
-            transition: transform 0.3s;
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
         }
-
-        .faq-item.active .faq-toggle {
-            transform: rotate(180deg);
+        
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            align-items: center;
         }
-
-        .faq-answer {
+        
+        .nav-link {
+            color: #6B7280;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #111827;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .btn-primary {
+            background: #10B981;
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .btn-primary:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .link-login {
+            color: #6B7280;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .mobile-toggle {
             display: none;
-            padding: 1.2rem;
-            background: rgba(15, 23, 42, 0.6);
-            color: var(--text-muted);
-            border-top: 1px solid rgba(124, 58, 237, 0.2);
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
         }
-
-        .faq-item.active .faq-answer {
+        
+        .mobile-toggle span {
+            width: 24px;
+            height: 3px;
+            background: #111827;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 16px 0;
+        }
+        
+        .mobile-menu.active {
             display: block;
         }
-
-        /* CTA FOOTER SECTION */
-        .cta-footer {
+        
+        .mobile-nav-link {
+            display: block;
+            padding: 12px 24px;
+            color: #374151;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+        
+        .mobile-nav-link:hover {
+            background: #F3F4F6;
+        }
+        
+        /* Hero Section - UPDATED LAYOUT */
+        .hero {
+            padding: 140px 0 80px;
+            background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);
+        }
+        
+        .hero-content {
             max-width: 900px;
-            margin: 5rem auto;
-            padding: 3rem 2rem;
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            border-radius: 12px;
+            margin: 0 auto;
             text-align: center;
         }
-
-        .cta-footer h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
+        
+        .hero-text h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.2;
         }
-
-        .cta-footer p {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            font-size: 1rem;
+        
+        .hero-text p {
+            font-size: 18px;
+            color: #6B7280;
+            margin-bottom: 32px;
         }
-
-        /* FOOTER */
-        footer {
-            border-top: 1px solid rgba(124, 58, 237, 0.1);
-            padding: 2rem;
+        
+        .trust-badges {
+            display: flex;
+            gap: 24px;
+            margin-top: 24px;
+            margin-bottom: 48px;
+            font-size: 14px;
+            color: #6B7280;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .hero-visual {
             text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            margin-top: 48px;
         }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1rem;
-            }
-
-            nav .links {
-                gap: 1rem;
-            }
-
-            .features-grid,
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-            }
+        
+        .mockup-placeholder {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
         }
-
-        /* MODAL STYLES */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
+        
+        .carousel-container {
+            position: relative;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            animation: fadeIn 0.3s;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        
+        .carousel-slides {
+            display: flex;
+            width: 200%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
         }
-
-        .modal-content {
-            background: var(--dark-bg);
-            margin: 5% auto;
-            padding: 2rem;
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            border-radius: 12px;
-            width: 90%;
-            max-width: 600px;
-            animation: slideIn 0.3s;
+        
+        .carousel-slide {
+            width: 50%;
+            height: 100%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #111827;
         }
-
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
-
-        .close {
-            color: var(--text-light);
-            float: right;
-            font-size: 2rem;
-            font-weight: bold;
+        
+        .carousel-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+        
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
             cursor: pointer;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
         }
-
-        .close:hover {
-            color: var(--accent);
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            color: var(--primary);
-        }
-
-        .success-message {
-            display: none;
-            background: rgba(16, 185, 129, 0.2);
-            border: 1px solid var(--success);
-            color: var(--success);
-            padding: 1rem;
+        
+        .carousel-dot.active {
+            background: #10B981;
+            width: 32px;
             border-radius: 6px;
+        }
+        
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #111827;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-arrow:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .carousel-arrow.prev {
+            left: 20px;
+        }
+        
+        .carousel-arrow.next {
+            right: 20px;
+        }
+        
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-alt {
+            background: #F9FAFB;
+        }
+        
+        .section-header {
             text-align: center;
+            margin-bottom: 64px;
+        }
+        
+        .section-header h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .section-header p {
+            font-size: 18px;
+            color: #6B7280;
+        }
+        
+        /* Steps */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 48px;
+        }
+        
+        .step {
+            text-align: center;
+        }
+        
+        .step-number {
+            width: 64px;
+            height: 64px;
+            background: #10B981;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 24px;
+        }
+        
+        .step h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .step p {
+            color: #6B7280;
+        }
+        
+        /* Bot Strategies */
+        .strategies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+        
+        .strategy-card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .strategy-icon {
+            width: 56px;
+            height: 56px;
+            background: #ECFDF5;
+            color: #10B981;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .strategy-card h3 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .strategy-card h4 {
+            color: #10B981;
+            margin-bottom: 16px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .strategy-example {
+            background: #F9FAFB;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        
+        .pros-cons {
+            margin-top: 16px;
+        }
+        
+        .pros-cons h5 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        
+        .pros-cons ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .pros-cons li {
+            padding: 4px 0;
+            font-size: 14px;
+            color: #6B7280;
+        }
+        
+        /* Comparison Table */
+        .comparison-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .comparison-table {
+            min-width: 800px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .comparison-header {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr;
+            background: #F9FAFB;
+            font-weight: 600;
+            border-bottom: 2px solid #E5E7EB;
+        }
+        
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+        
+        .comparison-cell {
+            padding: 20px 16px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .comparison-cell.feature-name {
+            text-align: left;
+            font-weight: 500;
+            color: #111827;
+            justify-content: flex-start;
+        }
+        
+        .comparison-header .comparison-cell {
+            padding: 24px 16px;
+            font-size: 16px;
+            color: #374151;
+        }
+        
+        .comparison-highlight {
+            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+            color: #065F46;
+            font-weight: 600;
+        }
+        
+        .comparison-header .comparison-highlight {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .comparison-row:hover {
+            background: #F9FAFB;
+        }
+        
+        .comparison-row:hover .comparison-highlight {
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-wrapper {
+                margin: 0 -24px;
+                padding: 0 24px;
+            }
+            
+            .comparison-table {
+                min-width: 700px;
+            }
+            
+            .comparison-cell {
+                padding: 16px 12px;
+                font-size: 13px;
+            }
+        }
+        
+        /* FAQ */
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .faq-question {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 12px;
+        }
+        
+        .faq-answer {
+            color: #6B7280;
+            line-height: 1.8;
+        }
+        
+        .faq-answer strong {
+            color: #111827;
+            display: block;
+            margin-top: 12px;
+        }
+        
+        /* Results */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+        
+        .result-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .result-card h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .result-config {
+            background: #F9FAFB;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+        
+        .result-config p {
+            margin: 4px 0;
+        }
+        
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #10B981;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #6B7280;
+        }
+        
+        .broker-logos {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            margin-top: 48px;
+        }
+        
+        .broker-logo {
+            width: 120px;
+            height: 60px;
+            background: #F3F4F6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6B7280;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        /* Final CTA */
+        .final-cta {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+        
+        .final-cta h2 {
+            font-size: 36px;
+            margin-bottom: 24px;
+        }
+        
+        .btn-white {
+            background: white;
+            color: #10B981;
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(255,255,255,0.3);
+        }
+        
+        .final-trust {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+        
+        /* Footer */
+        footer {
+            background: #111827;
+            color: #9CA3AF;
+            padding: 48px 0 24px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+        
+        .footer-column h4 {
+            color: white;
+            margin-bottom: 16px;
+        }
+        
+        .footer-column a {
+            color: #9CA3AF;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 24px;
+            border-top: 1px solid #374151;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu, .nav-actions {
+                display: none;
+            }
+            
+            .mobile-toggle {
+                display: flex;
+            }
+            
+            .hero-text h1 {
+                font-size: 32px;
+            }
+            
+            .section-header h2 {
+                font-size: 28px;
+            }
+            
+            .steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .trust-badges {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .mockup-placeholder {
+                height: 500px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- NAVBAR -->
-    <nav>
-        <a href="#" class="logo">Elirox</a>
-        <div class="links">
-            <a href="#features">Tính Năng</a>
-            <a href="#benefits">Lợi Ích</a>
-            <a href="#faq">FAQ</a>
-            <button class="btn-signin">Đăng Nhập</button>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="#top" class="logo">
+                    <div class="logo-icon">E</div>
+                    <span>Elirox Bot</span>
+                </a>
+                
+                <div class="nav-menu">
+                    <a href="#how-it-works" class="nav-link">Cách Hoạt Động</a>
+                    <a href="#bot-ai" class="nav-link">Bot AI</a>
+                    <a href="#faq" class="nav-link">FAQ</a>
+                    <a href="#results" class="nav-link">Kết Quả Thực Tế</a>
+                </div>
+                
+                <div class="nav-actions">
+                    <a href="https://click.eliroxlink.com/U2uaaCBz?click_id=2369&sub_id1=&webmaster_id=2369" class="btn-primary" target="_blank">Dùng Thử Miễn Phí</a>
+                    <a href="https://app.elirox.com/auth/signin" class="link-login" target="_blank">Đăng Nhập</a>
+                </div>
+                
+                <button class="mobile-toggle" id="mobileToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            
+            <div class="mobile-menu" id="mobileMenu">
+                <a href="#how-it-works" class="mobile-nav-link">Cách Hoạt Động</a>
+                <a href="#bot-ai" class="mobile-nav-link">Bot AI</a>
+                <a href="#faq" class="mobile-nav-link">FAQ</a>
+                <a href="#results" class="mobile-nav-link">Kết Quả Thực Tế</a>
+                <a href="https://click.eliroxlink.com/U2uaaCBz?click_id=2369&sub_id1=&webmaster_id=2369" class="mobile-nav-link" target="_blank">Dùng Thử Miễn Phí</a>
+                <a href="https://app.elirox.com/auth/signin" class="mobile-nav-link" target="_blank">Đăng Nhập</a>
+            </div>
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
-    <div class="hero">
-        <div class="hero-badge">✨ Giao Dịch Tự Động với AI</div>
-        <h1>Tự Động Hóa Giao Dịch Forex. <br>Thông Minh Và Đơn Giản.</h1>
-        <p class="hero-subtitle">
-            Khởi chạy chiến lược giao dịch tự động trong vài phút. Không cần mã lệnh, không cần kinh nghiệm.
-        </p>
-
-        <!-- SIGNUP FORM -->
-        <div class="form-section">
-            <h3>Bắt Đầu Miễn Phí</h3>
-            <form id="signupForm">
-                <div class="form-group">
-                    <label for="email">Email của bạn *</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        placeholder="you@example.com" 
-                        required
-                    >
+    <!-- Hero Section - UPDATED: Mockup ở dưới -->
+    <section class="hero" id="top">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>BOT Tự Động Giao Dịch 24/7<br>Không Cần Code, Không Cần Kinh Nghiệm</h1>
+                    <p>Kết nối tài khoản broker, chọn chiến lược, để bot AI giao dịch thay bạn. Tiền vẫn nằm an toàn ở broker – Elirox chỉ quản lý lệnh giao dịch.</p>
+                    <a href="https://click.eliroxlink.com/U2uaaCBz?click_id=2369&sub_id1=&webmaster_id=2369" class="btn-primary" target="_blank">Dùng Thử Miễn Phí $10,000 Demo</a>
+                    <div class="trust-badges">
+                        <div class="trust-badge">✓ Miễn phí tài khoản demo</div>
+                        <div class="trust-badge">✓ Tiền luôn ở broker</div>
+                        <div class="trust-badge">✓ Hủy bất cứ lúc nào</div>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="name">Tên của bạn *</label>
-                    <input 
-                        type="text" 
-                        id="name" 
-                        name="name" 
-                        placeholder="Nhập tên của bạn" 
-                        required
-                    >
+                <div class="hero-visual">
+                    <div class="mockup-placeholder">
+                        <div class="carousel-container">
+                            <button class="carousel-arrow prev" onclick="changeSlide(-1)">‹</button>
+                            <button class="carousel-arrow next" onclick="changeSlide(1)">›</button>
+                            <div class="carousel-slides" id="carouselSlides">
+                                <div class="carousel-slide">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='https://photos.google.com/share/AF1QipM_92c3qmuKDS-PAFirK4qyxL3UTgxqSTpHR_j6UVy8uP2Z4kuHkLyCP-vvHeC7rg/photo/AF1QipMSrD39lXkFvnwydIUmXOKk5t80ZhUu-1nHgbLy?key=MXoxMmQtRUtrMElBOEdaaGQ3b284MTRybW1SNzZ3' viewBox='0 0 1400 700'%3E%3Crect fill='%23111827' width='1400' height='700'/%3E%3Ctext x='700' y='350' font-family='Arial' font-size='24' fill='%2310B981' text-anchor='middle'%3EDesktop Trading Interface%3C/text%3E%3Ctext x='700' y='380' font-family='Arial' font-size='16' fill='%236B7280' text-anchor='middle'%3EMy robots - EURUSD/BTCUSD Trading%3C/text%3E%3C/svg%3E" alt="Elirox Desktop Interface">
+                                </div>
+                                <div class="carousel-slide">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='https://photos.google.com/share/AF1QipMJVeoaSaCEiUQEnkoC6HfgcaTF-xteZ1LP8xGxje95WAiorpEfqm2-lpV0Je69kQ/photo/AF1QipPw6VoHiAI2qyZiKVRAgI4XxZUkIeGXBnMAKhGJ?key=REhPQTVIc3VIVFlzbVhMUWJtb2xKM2hYdWZ5cVdn' viewBox='0 0 400 800'%3E%3Crect fill='%23111827' width='400' height='800'/%3E%3Ctext x='200' y='400' font-family='Arial' font-size='20' fill='%2310B981' text-anchor='middle'%3EMobile App%3C/text%3E%3Ctext x='200' y='430' font-family='Arial' font-size='14' fill='%236B7280' text-anchor='middle'%3EAccounts - GBPUSDm Trading%3C/text%3E%3C/svg%3E" alt="Elirox Mobile App">
+                                </div>
+                            </div>
+                            <div class="carousel-dots">
+                                <div class="carousel-dot active" onclick="goToSlide(0)"></div>
+                                <div class="carousel-dot" onclick="goToSlide(1)"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="form-group">
-                    <label for="phone">Số điện thoại (tùy chọn)</label>
-                    <input 
-                        type="tel" 
-                        id="phone" 
-                        name="phone" 
-                        placeholder="+84 9xxxxxxxx"
-                    >
+    <!-- How It Works -->
+    <section id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>Chỉ 4 Bước Để Bot AI Giao Dịch Thay Bạn</h2>
+                <p>Thiết lập trong vài phút, để bot làm việc 24/7</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Đăng Ký & Nhận $10,000 Demo</h3>
+                    <p>Tạo tài khoản trong 30 giây. Không cần thẻ tín dụng. Nhận ngay $10,000 tiền ảo để test bot.</p>
                 </div>
-
-                <div class="form-group">
-                    <label for="experience">Kinh Nghiệm Giao Dịch *</label>
-                    <select id="experience" name="experience" required>
-                        <option value="">-- Chọn --</option>
-                        <option value="beginner">Người Mới Bắt Đầu</option>
-                        <option value="intermediate">Trung Bình</option>
-                        <option value="advanced">Nâng Cao</option>
-                    </select>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Kết Nối Tài Khoản Broker</h3>
+                    <p>Chọn broker bạn đang dùng (Exness, XM, Doto...). Kết nối qua API an toàn. Tiền vẫn ở broker của bạn.</p>
                 </div>
-
-                <button type="submit" class="submit-btn">Đăng Ký Ngay</button>
-                <div class="success-message" id="successMessage">
-                    ✓ Đăng ký thành công! Đang chuyển hướng...
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Chọn Chiến Lược Giao Dịch</h3>
+                    <p>AI Preset tự động: Chọn mức rủi ro (An Toàn/Cân Bằng/Tích Cực). Bot AI tự động tối ưu tham số.</p>
                 </div>
-                <div class="loading" id="loading">
-                    ⏳ Đang xử lý...
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Khởi Động & Theo Dõi</h3>
+                    <p>Bot chạy 24/7 tự động. Theo dõi kết quả real-time trên dashboard. Tắt/bật bot bất cứ lúc nào.</p>
                 </div>
-                <p class="form-note">
-                    ✓ Không cần thẻ tín dụng | ✓ Demo Account: $10,000 ảo
-                </p>
-            </form>
-        </div>
-    </div>
-
-    <!-- FEATURES SECTION -->
-    <div class="features" id="features">
-        <h2>🚀 Tính Năng Chính</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3>AI Presets</h3>
-                <p>Chọn mức rủi ro và AI tự động cài đặt tham số tối ưu cho bạn.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Chiến Lược DCA & GRID</h3>
-                <p>Hai chiến lược mạnh mẽ cho các điều kiện thị trường khác nhau.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">⏱️</div>
-                <h3>Giao Dịch 24/5</h3>
-                <p>Bot chạy liên tục, ngay cả khi bạn ngủ. Không cần giám sát.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🔒</div>
-                <h3>An Toàn & Bảo Mật</h3>
-                <p>Tiền của bạn luôn ở sàn giao dịch. Elirox chỉ quản lý lệnh giao dịch.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">📱</div>
-                <h3>Web & Mobile</h3>
-                <p>Quản lý bot từ máy tính hoặc điện thoại di động ở bất kỳ nơi đâu.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">📈</div>
-                <h3>Phân Tích Real-Time</h3>
-                <p>Theo dõi hiệu suất bot với biểu đồ chi tiết và thống kê.</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- BENEFITS SECTION -->
-    <div class="benefits" id="benefits">
-        <h2>✅ Tại Sao Chọn Elirox?</h2>
-
-        <div class="benefit-item">
-            <div class="benefit-check">✓</div>
-            <div class="benefit-text">
-                <h4>Không Cần Kinh Nghiệm</h4>
-                <p>Elirox được thiết kế cho tất cả mức độ từ người mới đến chuyên gia.</p>
+    <!-- Bot AI Strategies -->
+    <section id="bot-ai" class="section-alt">
+        <div class="container">
+            <div class="section-header">
+                <h2>2 Chiến Lược Bot AI Được Chứng Minh Hiệu Quả</h2>
+                <p>DCA cho thị trường xu hướng, GRID cho thị trường đi ngang</p>
+            </div>
+            <div class="strategies">
+                <div class="strategy-card">
+                    <div class="strategy-icon">🤖</div>
+                    <h3>Bot DCA</h3>
+                    <h4>Dollar-Cost Averaging</h4>
+                    <p>Phù hợp với thị trường xu hướng. Bot chia nhỏ đầu tư thành nhiều lần để tối ưu giá trung bình.</p>
+                    <div class="strategy-example">
+                        <strong>Ví dụ:</strong> Bạn muốn mua vàng ở $2,000. Thay vì mua hết một lúc, bot chia thành 5 lần. Nếu giá giảm xuống $1,990, bot mua thêm → giá trung bình giảm. Khi giá phục hồi lên $2,000, bot chốt lời toàn bộ.
+                    </div>
+                    <div class="pros-cons">
+                        <h5>Ưu điểm:</h5>
+                        <ul>
+                            <li>✅ Làm mịn giá vào lệnh</li>
+                            <li>✅ Giảm rủi ro timing sai</li>
+                            <li>✅ Tận dụng pullback</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-icon">📊</div>
+                    <h3>Bot GRID</h3>
+                    <h4>Grid Trading</h4>
+                    <p>Phù hợp với thị trường đi ngang. Bot chia phạm vi giá thành lưới, tự động mua thấp bán cao.</p>
+                    <div class="strategy-example">
+                        <strong>Ví dụ:</strong> EUR/USD dao động 1.1000 - 1.1100. Bot đặt 10 ô lưới. Giá xuống 1.1000 → Mua. Giá lên 1.1010 → Bán (chốt lời 10 pips). Cứ thế lặp lại. Mỗi dao động = 1 lợi nhuận nhỏ.
+                    </div>
+                    <div class="pros-cons">
+                        <h5>Ưu điểm:</h5>
+                        <ul>
+                            <li>✅ Kiếm lời từ biến động</li>
+                            <li>✅ Không cần đoán hướng</li>
+                            <li>✅ Hoạt động tốt sideways</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="benefit-item">
-            <div class="benefit-check">✓</div>
-            <div class="benefit-text">
-                <h4>Không Có Cảm Xúc</h4>
-                <p>Bot giao dịch theo quy tắc, loại bỏ tham lam và sợ hãi khỏi giao dịch.</p>
+    <!-- Comparison Table -->
+    <section id="comparison">
+        <div class="container">
+            <div class="section-header">
+                <h2>Tại Sao Chọn Elirox Bot?</h2>
+                <p>So sánh với trading thủ công và bot truyền thống</p>
+            </div>
+            <div class="comparison-wrapper">
+                <div class="comparison-table">
+                    <div class="comparison-header">
+                        <div class="comparison-cell"></div>
+                        <div class="comparison-cell">Trading Thủ Công</div>
+                        <div class="comparison-cell">Bot Truyền Thống</div>
+                        <div class="comparison-cell comparison-highlight">Elirox Bot</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell feature-name">Cần biết code</div>
+                        <div class="comparison-cell">❌ Không</div>
+                        <div class="comparison-cell">✅ Cần Python/MQL</div>
+                        <div class="comparison-cell comparison-highlight">✅ Không cần</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell feature-name">Cần VPS riêng</div>
+                        <div class="comparison-cell">❌ Không</div>
+                        <div class="comparison-cell">✅ Phải thuê ($20-50/tháng)</div>
+                        <div class="comparison-cell comparison-highlight">✅ VPS có sẵn</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell feature-name">AI tối ưu tham số</div>
+                        <div class="comparison-cell">❌ Tự quyết định</div>
+                        <div class="comparison-cell">❌ Phải config thủ công</div>
+                        <div class="comparison-cell comparison-highlight">✅ AI Preset tự động</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell feature-name">Chạy 24/7</div>
+                        <div class="comparison-cell">❌ Chỉ khi online</div>
+                        <div class="comparison-cell">✅ Nếu có VPS</div>
+                        <div class="comparison-cell comparison-highlight">✅ Luôn chạy</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell feature-name">Loại bỏ cảm xúc</div>
+                        <div class="comparison-cell">❌ Bị ảnh hưởng tham lam/sợ hãi</div>
+                        <div class="comparison-cell">✅ Giao dịch theo code</div>
+                        <div class="comparison-cell comparison-highlight">✅ 100% kỷ luật</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell feature-name">Dễ dùng (1-10)</div>
+                        <div class="comparison-cell">⭐⭐⭐⭐⭐⭐⭐ (7/10)</div>
+                        <div class="comparison-cell">⭐⭐⭐ (3/10)</div>
+                        <div class="comparison-cell comparison-highlight">⭐⭐⭐⭐⭐⭐⭐⭐⭐ (9/10)</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell feature-name">Chi phí setup ban đầu</div>
+                        <div class="comparison-cell">$0</div>
+                        <div class="comparison-cell">$100-500 (code + VPS)</div>
+                        <div class="comparison-cell comparison-highlight">$0 (miễn phí demo)</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell feature-name">Thời gian setup</div>
+                        <div class="comparison-cell">0 phút</div>
+                        <div class="comparison-cell">2-7 ngày (học + code)</div>
+                        <div class="comparison-cell comparison-highlight">5 phút</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell feature-name">Tích hợp TradingView</div>
+                        <div class="comparison-cell">✅ Tự xem chart</div>
+                        <div class="comparison-cell">❌ Phải code thêm</div>
+                        <div class="comparison-cell comparison-highlight">✅ Built-in</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell feature-name">Hỗ trợ nhiều broker</div>
+                        <div class="comparison-cell">✅ Tùy broker cho phép</div>
+                        <div class="comparison-cell">❌ Thường chỉ 1-2 broker</div>
+                        <div class="comparison-cell comparison-highlight">✅ 7+ broker uy tín</div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 48px;">
+                <p style="color: #6B7280; margin-bottom: 24px; font-size: 18px;"><strong>Kết luận:</strong> Elirox = Bot chuyên nghiệp + AI + VPS + Dễ dùng, tất cả trong một</p>
+                <a href="https://click.eliroxlink.com/U2uaaCBz?click_id=2369&sub_id1=&webmaster_id=2369" class="btn-primary" target="_blank">Trải Nghiệm Sự Khác Biệt Ngay</a>
             </div>
         </div>
+    </section>
 
-        <div class="benefit-item">
-            <div class="benefit-check">✓</div>
-            <div class="benefit-text">
-                <h4>Tiết Kiệm Thời Gian</h4>
-                <p>Tự động hóa công việc, tập trung vào cải thiện chiến lược của bạn.</p>
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Câu Hỏi Thường Gặp</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">❓ Tiền của tôi có an toàn không? Bot có thể rút tiền không?</div>
+                    <div class="faq-answer">
+                        <strong>Hoàn toàn an toàn.</strong> Tiền của bạn LUÔN LUÔN nằm ở tài khoản broker (Exness, XM, Doto...). Elirox kết nối qua API với quyền hạn hạn chế: CHỈ được mở/đóng lệnh giao dịch. KHÔNG THỂ rút tiền, chuyển tiền, thay đổi mật khẩu.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">❓ Tôi không biết gì về trading, có dùng được không?</div>
+                    <div class="faq-answer">
+                        <strong>Được!</strong> Elirox được thiết kế cho cả người mới 100%. Bạn không cần biết phân tích kỹ thuật, không cần lập trình, không cần ngồi xem chart 24/7. Chỉ cần chọn tài sản, chọn mức rủi ro (An Toàn/Cân Bằng/Tích Cực), bấm "Khởi Động". AI Preset tự động cấu hình tất cả cho bạn.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">❓ Bot có đảm bảo lời 100% không?</div>
+                    <div class="faq-answer">
+                        <strong>KHÔNG.</strong> Không có hệ thống nào đảm bảo lời 100%. Trading luôn có rủi ro. Nhưng bot giúp bạn: loại bỏ cảm xúc (tham lam, sợ hãi), giao dịch theo quy tắc khoa học, quản lý rủi ro tự động, không bỏ lỡ cơ hội (chạy 24/7). Khuyến nghị: Luôn test trên demo account trước (miễn phí $10,000 ảo).
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">❓ Cần bao nhiêu vốn để bắt đầu?</div>
+                    <div class="faq-answer">
+                        <strong>Demo (Miễn phí):</strong> $0 - Bạn nhận $10,000 tiền ảo.<br>
+                        <strong>Thật:</strong> Minimum $100-$200 (lot 0.01). Khuyến nghị: $500-$1,000 (an toàn hơn). Optimal: $2,000+ (đủ margin cho DCA nhiều lệnh).
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">❓ Tôi có thể tắt bot và rút tiền bất cứ lúc nào không?</div>
+                    <div class="faq-answer">
+                        <strong>CÓ. 100% kiểm soát.</strong> Bấm nút "Stop" trong app để tắt bot. Vào Settings → Cancel để hủy gói đăng ký. Không ràng buộc hợp đồng, không phí hủy. Rút tiền trực tiếp qua broker của bạn.
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="benefit-item">
-            <div class="benefit-check">✓</div>
-            <div class="benefit-text">
-                <h4>Quản Lý Rủi Ro</h4>
-                <p>Công cụ quản lý rủi ro tích hợp với Take Profit và Stop Loss.</p>
+    <!-- Results -->
+    <section id="results" class="section-alt">
+        <div class="container">
+            <div class="section-header">
+                <h2>Kết Quả Thực Tế Từ Bot Elirox</h2>
+                <p>Demo account results - Minh bạch 100%</p>
+            </div>
+            <div class="results-grid">
+                <div class="result-card">
+                    <h3>Bot DCA trên XAUUSD (Gold)</h3>
+                    <div class="result-config">
+                        <p><strong>Cấu hình:</strong> AI Preset - Balanced</p>
+                        <p><strong>Vốn:</strong> $10,000</p>
+                        <p><strong>Thời gian:</strong> 30 ngày</p>
+                    </div>
+                    <div class="result-stats">
+                        <div class="stat">
+                            <div class="stat-value">+7.2%</div>
+                            <div class="stat-label">Lợi nhuận</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">68%</div>
+                            <div class="stat-label">Win Rate</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">42</div>
+                            <div class="stat-label">Lệnh</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">-3.8%</div>
+                            <div class="stat-label">Max DD</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="result-card">
+                    <h3>Bot GRID trên EUR/USD</h3>
+                    <div class="result-config">
+                        <p><strong>Cấu hình:</strong> AI Preset - Conservative</p>
+                        <p><strong>Vốn:</strong> $10,000</p>
+                        <p><strong>Thời gian:</strong> 30 ngày</p>
+                    </div>
+                    <div class="result-stats">
+                        <div class="stat">
+                            <div class="stat-value">+3.8%</div>
+                            <div class="stat-label">Lợi nhuận</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">71%</div>
+                            <div class="stat-label">Win Rate</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">87</div>
+                            <div class="stat-label">Lệnh</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">-1.2%</div>
+                            <div class="stat-label">Max DD</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 32px;">
+                <p style="color: #6B7280; margin-bottom: 24px;">Thay vì tin lời chúng tôi, hãy tự kiểm chứng với $10,000 demo miễn phí</p>
+                <a href="https://click.eliroxlink.com/U2uaaCBz?click_id=2369&sub_id1=&webmaster_id=2369" class="btn-primary" target="_blank">Nhận $10,000 Demo Ngay</a>
+            </div>
+            <div class="broker-logos">
+                <div class="broker-logo">Exness</div>
+                <div class="broker-logo">XM Trading</div>
+                <div class="broker-logo">Doto</div>
+                <div class="broker-logo">IC Markets</div>
+                <div class="broker-logo">IG</div>
+                <div class="broker-logo">Alpari</div>
             </div>
         </div>
+    </section>
 
-        <div class="benefit-item">
-            <div class="benefit-check">✓</div>
-            <div class="benefit-text">
-                <h4>Kiểm Tra Miễn Phí</h4>
-                <p>Demo account $10,000 để kiểm tra mà không có rủi ro tài chính.</p>
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Sẵn Sàng Để Bot AI Giao Dịch Thay Bạn?</h2>
+            <p style="font-size: 18px; margin-bottom: 32px;">Thiết lập trong 5 phút. Không rủi ro với demo account.</p>
+            <a href="https://click.eliroxlink.com/U2uaaCBz?click_id=2369&sub_id1=&webmaster_id=2369" class="btn-white" target="_blank">Dùng Thử Miễn Phí Ngay – Không Cần Thẻ Tín Dụng</a>
+            <div class="final-trust">
+                <div>✓ Thiết lập trong 5 phút</div>
+                <div>✓ Hủy bất cứ lúc nào</div>
+                <div>✓ Hỗ trợ 24/7</div>
             </div>
         </div>
+    </section>
 
-        <div class="benefit-item">
-            <div class="benefit-check">✓</div>
-            <div class="benefit-text">
-                <h4>Hỗ Trợ Nhiều Sàn</h4>
-                <p>Kết nối với Exness, XM, Doto và nhiều sàn giao dịch khác.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- TESTIMONIALS SECTION -->
-    <div class="testimonials">
-        <h2>⭐ Những Gì Traders Nói Về Elirox</h2>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <div class="stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">
-                    "Elirox rất dễ sử dụng với giao diện sạch sẽ. Các tính năng rất hữu ích trong sử dụng hàng ngày."
-                </p>
-                <p class="testimonial-author">- Nguyễn A</p>
-            </div>
-
-            <div class="testimonial-card">
-                <div class="stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">
-                    "Giao dịch tự động làm cho việc kiếm tiền dễ dàng. Không cần ngồi nhìn màn hình cả ngày."
-                </p>
-                <p class="testimonial-author">- Trần B</p>
-            </div>
-
-            <div class="testimonial-card">
-                <div class="stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">
-                    "Tôi là người mới và đây là ứng dụng hoàn hảo để bắt đầu giao dịch tự động."
-                </p>
-                <p class="testimonial-author">- Phạm C</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- FAQ SECTION -->
-    <div class="faq" id="faq">
-        <h2>❓ Câu Hỏi Thường Gặp</h2>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <h4>Tôi cần kinh nghiệm giao dịch như thế nào?</h4>
-                <span class="faq-toggle">▼</span>
-            </div>
-            <div class="faq-answer">
-                Không cần kinh nghiệm gì! Elirox được thiết kế cho tất cả mức độ. Bạn có thể sử dụng AI Presets để bắt đầu ngay, hoặc tùy chỉnh thủ công nếu muốn kiểm soát nhiều hơn.
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <h4>Tiền của tôi có an toàn không?</h4>
-                <span class="faq-toggle">▼</span>
-            </div>
-            <div class="faq-answer">
-                Có! Tiền của bạn luôn ở sàn giao dịch. Elirox không thực hiện gửi/rút tiền - chỉ quản lý lệnh giao dịch thông qua API an toàn.
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <h4>Tôi có thể kiểm tra trước khi giao dịch thực không?</h4>
-                <span class="faq-toggle">▼</span>
-            </div>
-            <div class="faq-answer">
-                Có! Elirox cung cấp demo account miễn phí với $10,000 quỹ ảo. Bạn có thể khởi chạy bot, kiểm tra chiến lược và thấy hiệu suất mà không rủi ro.
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <h4>Chi phí để sử dụng Elirox là bao nhiêu?</h4>
-                <span class="faq-toggle">▼</span>
-            </div>
-            <div class="faq-answer">
-                Demo account hoàn toàn miễn phí! Gói trả phí bắt đầu từ mức cơ bản với giá hợp lý. Ngoài ra, nếu bạn đăng ký qua sàn giao dịch đối tác, bạn có thể nhận tháng đầu miễn phí.
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <h4>Elirox hỗ trợ những sàn giao dịch nào?</h4>
-                <span class="faq-toggle">▼</span>
-            </div>
-            <div class="faq-answer">
-                Elirox hỗ trợ các sàn giao dịch lớn như Exness, XM, Doto, và nhiều sàn khác. Bạn có thể xem danh sách đầy đủ trong ứng dụng.
-            </div>
-        </div>
-    </div>
-
-    <!-- CTA FOOTER -->
-    <div class="cta-footer">
-        <h2>🎯 Sẵn Sàng Tự Động Hóa Giao Dịch Của Bạn?</h2>
-        <p>Khởi chạy chiến lược giao dịch tự động trong vài phút với kết nối sàn giao dịch đơn giản.</p>
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <button class="btn-primary" onclick="document.getElementById('signupForm').scrollIntoView({behavior: 'smooth'})">
-                Đăng Ký Ngay
-            </button>
-            <button class="btn-secondary" onclick="alert('Truy cập demo account')">
-                Thử Demo Miễn Phí
-            </button>
-        </div>
-    </div>
-
-    <!-- FOOTER -->
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2026 Elirox. All rights reserved. | 
-            <a href="#" style="color: var(--primary); text-decoration: none;">Điều Khoản</a> | 
-            <a href="#" style="color: var(--primary); text-decoration: none;">Chính Sách Bảo Mật</a> | 
-            <a href="#" style="color: var(--primary); text-decoration: none;">Liên Hệ</a>
-        </p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Sản Phẩm</h4>
+                    <a href="#how-it-works">Cách Hoạt Động</a>
+                    <a href="#bot-ai">Chiến Lược Bot</a>
+                    <a href="https://hc.eliroxbot.com/" target="_blank">Hướng Dẫn</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Hỗ Trợ</h4>
+                    <a href="#faq">FAQ</a>
+                    <a href="https://hc.eliroxbot.com/" target="_blank">Help Center</a>
+                    <a href="mailto:support@eliroxbot.com">Email Support</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Công Ty</h4>
+                    <a href="https://elirox.com/terms" target="_blank">Điều Khoản</a>
+                    <a href="https://elirox.com/privacy" target="_blank">Chính Sách</a>
+                    <a href="https://elirox.com/disclamer" target="_blank">Disclaimer</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Elirox Bot..</p>
+            </div>
+        </div>
     </footer>
 
     <script>
-        // FAQ Toggle
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', function() {
-                const item = this.parentElement;
-                item.classList.toggle('active');
+        // Carousel functionality
+        let currentSlide = 0;
+        const slides = document.getElementById('carouselSlides');
+        const dots = document.querySelectorAll('.carousel-dot');
+        
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 1;
+            if (currentSlide > 1) currentSlide = 0;
+            updateCarousel();
+        }
+        
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+        
+        function updateCarousel() {
+            slides.style.transform = `translateX(-${currentSlide * 50}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+        
+        // Auto-play carousel
+        setInterval(() => {
+            changeSlide(1);
+        }, 5000);
+        
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking links
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
             });
         });
-
-        // FORM SUBMISSION WITH GOOGLE SHEET INTEGRATION
-        document.getElementById('signupForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const loading = document.getElementById('loading');
-            const successMessage = document.getElementById('successMessage');
-            const form = this;
-
-            loading.style.display = 'block';
-
-            // Collect form data
-            const formData = {
-                email: document.getElementById('email').value,
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                experience: document.getElementById('experience').value,
-                timestamp: new Date().toLocaleString('vi-VN'),
-                source: 'Affiliate Landing Page',
-                affiliate_link: 'https://click.eliroxlink.com/U2uaaCBz'
-            };
-
-            try {
-                // Send to Google Sheet
-                await fetch('https://script.google.com/macros/s/YOUR_GOOGLE_SHEET_APP_SCRIPT_ID/usercontent', {
-                    method: 'POST',
-                    body: JSON.stringify(formData)
-                });
-
-                // Show success message
-                loading.style.display = 'none';
-                successMessage.style.display = 'block';
-
-                // Reset form
-                form.reset();
-
-                // Redirect to affiliate link after 2 seconds
-                setTimeout(() => {
-                    window.location.href = 'https://click.eliroxlink.com/U2uaaCBz';
-                }, 2000);
-
-            } catch (error) {
-                console.error('Error:', error);
-                loading.style.display = 'none';
-                alert('Có lỗi xảy ra. Vui lòng thử lại.');
-            }
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
     </script>
 </body>
