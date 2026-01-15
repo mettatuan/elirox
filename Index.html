@@ -168,10 +168,10 @@
         }
         
         .hero-text h1 {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: 700;
             margin-bottom: 24px;
-            line-height: 1.2;
+            line-height: 1.3;
         }
         
         .hero-text p {
@@ -204,99 +204,17 @@
         
         .mockup-placeholder {
             width: 100%;
-            max-width: 800px;
-            height: 600px;
+            max-width: 900px;
             margin: 0 auto;
-            position: relative;
+            border-radius: 16px;
             overflow: hidden;
-            border-radius: 24px;
             box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
         }
         
-        .carousel-container {
-            position: relative;
+        .mockup-placeholder img {
             width: 100%;
-            height: 100%;
-        }
-        
-        .carousel-slides {
-            display: flex;
-            width: 200%;
-            height: 100%;
-            transition: transform 0.5s ease-in-out;
-        }
-        
-        .carousel-slide {
-            width: 50%;
-            height: 100%;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #111827;
-        }
-        
-        .carousel-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        
-        .carousel-dots {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 12px;
-            z-index: 10;
-        }
-        
-        .carousel-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .carousel-dot.active {
-            background: #10B981;
-            width: 32px;
-            border-radius: 6px;
-        }
-        
-        .carousel-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #111827;
-            transition: all 0.3s ease;
-        }
-        
-        .carousel-arrow:hover {
-            background: white;
-            transform: translateY(-50%) scale(1.1);
-        }
-        
-        .carousel-arrow.prev {
-            left: 20px;
-        }
-        
-        .carousel-arrow.next {
-            right: 20px;
+            height: auto;
+            display: block;
         }
         
         /* Sections */
@@ -705,7 +623,7 @@
             }
             
             .hero-text h1 {
-                font-size: 32px;
+                font-size: 28px;
             }
             
             .section-header h2 {
@@ -722,7 +640,7 @@
             }
             
             .mockup-placeholder {
-                height: 500px;
+                max-width: 100%;
             }
         }
     </style>
@@ -783,22 +701,8 @@
                 </div>
                 <div class="hero-visual">
                     <div class="mockup-placeholder">
-                        <div class="carousel-container">
-                            <button class="carousel-arrow prev" onclick="changeSlide(-1)">‹</button>
-                            <button class="carousel-arrow next" onclick="changeSlide(1)">›</button>
-                            <div class="carousel-slides" id="carouselSlides">
-                                <div class="carousel-slide">
-                                    <img src="data:image/svg+xml,%3Csvg xmlns='https://photos.google.com/share/AF1QipM_92c3qmuKDS-PAFirK4qyxL3UTgxqSTpHR_j6UVy8uP2Z4kuHkLyCP-vvHeC7rg/photo/AF1QipMSrD39lXkFvnwydIUmXOKk5t80ZhUu-1nHgbLy?key=MXoxMmQtRUtrMElBOEdaaGQ3b284MTRybW1SNzZ3' viewBox='0 0 1400 700'%3E%3Crect fill='%23111827' width='1400' height='700'/%3E%3Ctext x='700' y='350' font-family='Arial' font-size='24' fill='%2310B981' text-anchor='middle'%3EDesktop Trading Interface%3C/text%3E%3Ctext x='700' y='380' font-family='Arial' font-size='16' fill='%236B7280' text-anchor='middle'%3EMy robots - EURUSD/BTCUSD Trading%3C/text%3E%3C/svg%3E" alt="Elirox Desktop Interface">
-                                </div>
-                                <div class="carousel-slide">
-                                    <img src="data:image/svg+xml,%3Csvg xmlns='https://photos.google.com/share/AF1QipMJVeoaSaCEiUQEnkoC6HfgcaTF-xteZ1LP8xGxje95WAiorpEfqm2-lpV0Je69kQ/photo/AF1QipPw6VoHiAI2qyZiKVRAgI4XxZUkIeGXBnMAKhGJ?key=REhPQTVIc3VIVFlzbVhMUWJtb2xKM2hYdWZ5cVdn' viewBox='0 0 400 800'%3E%3Crect fill='%23111827' width='400' height='800'/%3E%3Ctext x='200' y='400' font-family='Arial' font-size='20' fill='%2310B981' text-anchor='middle'%3EMobile App%3C/text%3E%3Ctext x='200' y='430' font-family='Arial' font-size='14' fill='%236B7280' text-anchor='middle'%3EAccounts - GBPUSDm Trading%3C/text%3E%3C/svg%3E" alt="Elirox Mobile App">
-                                </div>
-                            </div>
-                            <div class="carousel-dots">
-                                <div class="carousel-dot active" onclick="goToSlide(0)"></div>
-                                <div class="carousel-dot" onclick="goToSlide(1)"></div>
-                            </div>
-                        </div>
+                        <img src="https://github.com/mettatuan/elirox/blob/main/1.png?raw=true" 
+                             alt="Elirox Bot - Giao diện giao dịch tự động">
                     </div>
                 </div>
             </div>
@@ -1113,7 +1017,7 @@
                     <h4>Hỗ Trợ</h4>
                     <a href="#faq">FAQ</a>
                     <a href="https://hc.eliroxbot.com/" target="_blank">Help Center</a>
-                    <a href="mailto:support@eliroxbot.com">Email Support</a>
+                    <a href="mailto:support@elirox.com">Email Support</a>
                 </div>
                 <div class="footer-column">
                     <h4>Công Ty</h4>
@@ -1123,41 +1027,12 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2026 Elirox Bot..</p>
+                <p>© 2026 Elirox Bot. Đây là trang affiliate độc lập, không phải trang chính thức của Elirox LLC.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Carousel functionality
-        let currentSlide = 0;
-        const slides = document.getElementById('carouselSlides');
-        const dots = document.querySelectorAll('.carousel-dot');
-        
-        function changeSlide(direction) {
-            currentSlide += direction;
-            if (currentSlide < 0) currentSlide = 1;
-            if (currentSlide > 1) currentSlide = 0;
-            updateCarousel();
-        }
-        
-        function goToSlide(index) {
-            currentSlide = index;
-            updateCarousel();
-        }
-        
-        function updateCarousel() {
-            slides.style.transform = `translateX(-${currentSlide * 50}%)`;
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentSlide);
-            });
-        }
-        
-        // Auto-play carousel
-        setInterval(() => {
-            changeSlide(1);
-        }, 5000);
-        
         // Mobile menu toggle
         const mobileToggle = document.getElementById('mobileToggle');
         const mobileMenu = document.getElementById('mobileMenu');
