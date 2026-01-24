@@ -14,43 +14,154 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', system-ui, sans-serif;
             color: #E5E7EB;
-            line-height: 1.6;
-            background: #0F172A;
+            line-height: 1.7;
+            background: #020617;
             overflow-x: hidden;
+            font-size: 18px;
         }
         
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
         }
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
-            color: white;
-            padding: 80px 0 100px;
-            text-align: center;
+            background: linear-gradient(180deg, #0B0F14 0%, #1E293B 100%);
             position: relative;
+            padding: 100px 0 80px;
             overflow: hidden;
         }
         
-        .hero-image-container {
-            margin: 48px 0 32px;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
             text-align: center;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: #C4B5FD;
+            padding: 10px 24px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 32px;
+        }
+        
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            color: #F1F5F9;
+        }
+        
+        .hero .highlight {
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 48px;
+            color: #CBD5E1;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-image-container {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            margin-top: 64px;
+            margin-bottom: 64px;
+        }
+        
+        .hero-image-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
         
         .hero-image {
             width: 100%;
-            max-width: 100%;
             height: auto;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                0 0 80px rgba(99, 102, 241, 0.2);
         }
         
-        /* Modal Popup */
+        /* Buttons */
+        .btn-open-form {
+            display: inline-block;
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            color: white;
+            padding: 20px 60px;
+            font-size: 20px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+        }
+        
+        .btn-open-form:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(239, 68, 68, 0.6);
+        }
+        
+        .value-tag {
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            color: #FBBF24;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+        
+        .trust-line {
+            margin-top: 24px;
+            font-size: 14px;
+            color: #94A3B8;
+        }
+        
+        .trust-line strong {
+            color: #C4B5FD;
+        }
+        
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -59,8 +170,8 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
             animation: fadeIn 0.3s ease;
         }
         
@@ -71,15 +182,15 @@
         }
         
         .modal-content {
-            background: #1a1a1a;
+            background: #0F172A;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 48px;
             border-radius: 16px;
             max-width: 500px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
-            border: 1px solid #333;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
             animation: slideUp 0.3s ease;
         }
         
@@ -113,91 +224,7 @@
             }
         }
         
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="1" fill="white" opacity="0.1"/></svg>');
-            opacity: 0.3;
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        
-        .hero .highlight {
-            color: #FCD34D;
-        }
-        
-        .hero p {
-            font-size: 20px;
-            margin-bottom: 40px;
-            opacity: 0.95;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .cta-box {
-            background: #1E293B;
-            color: white;
-            padding: 40px;
-            border-radius: 16px;
-            max-width: 600px;
-            margin: 0 auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            border: 1px solid #334155;
-        }
-        
-        .btn-open-form {
-            display: inline-block;
-            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-            color: white;
-            padding: 20px 60px;
-            font-size: 20px;
-            font-weight: 700;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
-        }
-        
-        .btn-open-form:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
-        }
-        
-        .cta-box h3 {
-            font-size: 24px;
-            margin-bottom: 16px;
-            color: #A78BFA;
-        }
-        
+        /* Form */
         .form-group {
             margin-bottom: 20px;
             text-align: left;
@@ -206,7 +233,7 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #E5E7EB;
+            color: #CBD5E1;
             font-weight: 600;
             font-size: 14px;
         }
@@ -214,18 +241,18 @@
         .form-group input {
             width: 100%;
             padding: 14px 16px;
-            border: 1px solid #444;
+            background: #1E293B;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
             border-radius: 8px;
             font-size: 16px;
-            background: #000000;
-            color: white;
             transition: all 0.3s ease;
         }
         
         .form-group input:focus {
+            border-color: #8B5CF6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
             outline: none;
-            border-color: #A78BFA;
-            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
         }
         
         .form-group input::placeholder {
@@ -238,27 +265,19 @@
             margin-bottom: 16px;
             text-align: center;
             font-weight: 600;
+            font-size: 14px;
         }
         
         .form-message.success {
-            background: #065F46;
-            color: #D1FAE5;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10B981;
         }
         
         .form-message.error {
-            background: #991B1B;
-            color: #FEE2E2;
-        }
-        
-        .value-tag {
-            display: inline-block;
-            background: #FEF3C7;
-            color: #92400E;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 20px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #EF4444;
         }
         
         .btn-cta {
@@ -266,130 +285,138 @@
             width: 100%;
             background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
             color: white;
-            padding: 20px 40px;
-            font-size: 20px;
+            padding: 18px 40px;
+            font-size: 18px;
             font-weight: 700;
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            text-decoration: none;
             text-align: center;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
         }
         
         .btn-cta:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+            box-shadow: 0 15px 40px rgba(239, 68, 68, 0.6);
+        }
+        
+        .btn-cta:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         
         .btn-cta-arrow {
             margin-left: 8px;
         }
         
-        .trust-line {
-            margin-top: 16px;
-            font-size: 14px;
-            color: #6B7280;
-        }
-        
-        .trust-line strong {
-            color: #1E40AF;
-        }
-        
-        /* Problem Section */
+        /* Sections */
         .section {
-            padding: 80px 0;
-            background: #0F172A;
+            padding: 100px 0;
+            background: #020617;
         }
         
-        .section-dark {
-            background: #000000;
+        .section-alt {
+            background: #0B0F14;
         }
         
         .section-header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 64px;
         }
         
         .section-title {
-            font-size: 36px;
+            font-size: 42px;
             font-weight: 800;
-            color: #F3F4F6;
+            color: #F1F5F9;
             margin-bottom: 16px;
+            letter-spacing: -0.01em;
         }
         
         .section-subtitle {
             font-size: 18px;
-            color: #9CA3AF;
+            color: #94A3B8;
             max-width: 700px;
             margin: 0 auto;
         }
         
-        .problem-grid {
+        /* Cards */
+        .problem-grid,
+        .benefits-grid,
+        .testimonials {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 24px;
-            margin-bottom: 40px;
+        }
+        
+        .problem-card,
+        .benefit-card,
+        .testimonial {
+            background: #0F172A;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+        
+        .problem-card:hover,
+        .benefit-card:hover,
+        .testimonial:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.3);
         }
         
         .problem-card {
-            background: #1a1a1a;
-            padding: 32px;
-            border-radius: 12px;
-            border: 1px solid #333;
             border-left: 4px solid #EF4444;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
         
         .problem-icon {
-            font-size: 32px;
+            font-size: 40px;
             margin-bottom: 16px;
         }
         
-        .problem-card h3 {
-            font-size: 18px;
+        .problem-card h3,
+        .benefit-card h3 {
+            font-size: 20px;
             font-weight: 700;
             margin-bottom: 12px;
-            color: #F3F4F6;
+            color: #F1F5F9;
         }
         
-        .problem-card p {
-            color: #9CA3AF;
+        .problem-card p,
+        .benefit-card p {
+            color: #CBD5E1;
             line-height: 1.6;
         }
         
         .result-box {
-            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
-            border: 2px solid #EF4444;
-            padding: 32px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            padding: 40px;
             border-radius: 12px;
             text-align: center;
+            margin-top: 40px;
         }
         
         .result-box h3 {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 800;
-            color: #DC2626;
+            color: #EF4444;
             margin-bottom: 12px;
         }
         
         .result-box p {
             font-size: 18px;
-            color: #991B1B;
+            color: #CBD5E1;
         }
         
         /* Solution Section */
-        .solution-section {
-            background: #000000;
-        }
-        
         .solution-box {
-            background: #1a1a1a;
+            background: #0F172A;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 48px;
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
-            border: 1px solid #333;
         }
         
         .solution-header {
@@ -398,149 +425,148 @@
         }
         
         .solution-header h2 {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 800;
-            color: #A78BFA;
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 16px;
         }
         
         .solution-header p {
             font-size: 18px;
-            color: #9CA3AF;
+            color: #94A3B8;
         }
         
         .scanner-preview {
-            background: #000000;
+            background: #1E293B;
             padding: 40px;
             border-radius: 12px;
-            margin-bottom: 32px;
-            border: 2px solid #6366F1;
+            border: 1px solid rgba(139, 92, 246, 0.3);
         }
         
-        .scanner-row {
+        .bot-features {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 16px;
-            padding: 16px;
-            background: white;
-            border-radius: 8px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .bot-feature {
+            background: #0F172A;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .bot-feature h4 {
+            font-size: 18px;
+            font-weight: 700;
             margin-bottom: 12px;
-            align-items: center;
+        }
+        
+        .bot-feature.dca {
             border-left: 4px solid #10B981;
         }
         
-        .scanner-row.red {
-            border-left-color: #EF4444;
-        }
-        
-        .scanner-row.yellow {
-            border-left-color: #F59E0B;
-        }
-        
-        .asset {
-            font-weight: 700;
-            font-size: 16px;
-        }
-        
-        .score {
-            font-weight: 800;
-            font-size: 20px;
-        }
-        
-        .score.high {
+        .bot-feature.dca h4 {
             color: #10B981;
         }
         
-        .score.low {
-            color: #EF4444;
+        .bot-feature.grid {
+            border-left: 4px solid #6366F1;
         }
         
-        .score.mid {
-            color: #F59E0B;
+        .bot-feature.grid h4 {
+            color: #6366F1;
         }
         
-        .trend {
+        .bot-feature p {
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .bot-example {
+            background: rgba(99, 102, 241, 0.1);
+            padding: 12px;
+            border-radius: 8px;
             font-size: 14px;
-            padding: 4px 12px;
+            color: #E5E7EB;
+        }
+        
+        .highlight-box {
+            background: rgba(251, 191, 36, 0.1);
+            border: 2px solid rgba(251, 191, 36, 0.3);
+            padding: 24px;
             border-radius: 12px;
-            font-weight: 600;
+            margin-top: 32px;
         }
         
-        .trend.up {
-            background: #D1FAE5;
-            color: #065F46;
-        }
-        
-        .trend.down {
-            background: #FEE2E2;
-            color: #991B1B;
-        }
-        
-        .action {
-            font-weight: 700;
-            font-size: 14px;
-            padding: 6px 16px;
-            border-radius: 20px;
-        }
-        
-        .action.buy {
-            background: #10B981;
-            color: white;
-        }
-        
-        .action.avoid {
-            background: #EF4444;
-            color: white;
-        }
-        
-        .action.wait {
-            background: #F59E0B;
-            color: white;
-        }
-        
-        /* Benefits Section */
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 32px;
-        }
-        
-        .benefit-card {
+        .highlight-box h4 {
+            color: #FBBF24;
+            font-size: 18px;
+            margin-bottom: 12px;
             text-align: center;
-            padding: 32px;
         }
         
+        .highlight-box p {
+            color: #CBD5E1;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        /* Benefits */
         .benefit-icon {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 20px;
-            font-size: 36px;
+            font-size: 40px;
         }
         
-        .benefit-card h3 {
-            font-size: 20px;
-            font-weight: 700;
+        .benefit-card {
+            text-align: center;
+        }
+        
+        .bonus-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            padding: 48px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 48px;
+        }
+        
+        .bonus-box h3 {
+            font-size: 28px;
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            font-weight: 800;
+        }
+        
+        .bonus-box p {
+            color: #CBD5E1;
+            font-size: 18px;
             margin-bottom: 12px;
-            color: #F3F4F6;
         }
         
-        .benefit-card p {
-            color: #9CA3AF;
-            line-height: 1.6;
+        .bonus-box small {
+            color: #94A3B8;
+            font-size: 14px;
         }
         
-        /* How to Get Section */
-        .how-to-section {
-            background: #000000;
-        }
-        
+        /* Steps */
         .steps {
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
         }
         
@@ -548,17 +574,22 @@
             display: flex;
             gap: 24px;
             margin-bottom: 32px;
-            padding: 24px;
-            background: #1a1a1a;
+            padding: 32px;
+            background: #0F172A;
             border-radius: 12px;
-            border: 1px solid #333;
-            border-left: 4px solid #8B5CF6;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .step:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            transform: translateX(8px);
         }
         
         .step-number {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -570,39 +601,41 @@
         }
         
         .step-content h3 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             margin-bottom: 8px;
-            color: #F3F4F6;
+            color: #F1F5F9;
         }
         
         .step-content p {
-            color: #9CA3AF;
+            color: #CBD5E1;
+            margin-bottom: 12px;
         }
         
         .step-link {
             display: inline-block;
-            margin-top: 8px;
-            color: #A78BFA;
+            color: #8B5CF6;
             font-weight: 600;
             text-decoration: none;
             font-size: 16px;
+            transition: color 0.3s ease;
         }
         
         .step-link:hover {
+            color: #C4B5FD;
             text-decoration: underline;
         }
         
         .warning-box {
-            background: #FEF3C7;
-            border: 2px solid #F59E0B;
+            background: rgba(251, 191, 36, 0.1);
+            border: 2px solid rgba(251, 191, 36, 0.3);
             padding: 24px;
             border-radius: 12px;
             margin-top: 32px;
         }
         
         .warning-box h4 {
-            color: #92400E;
+            color: #FBBF24;
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 12px;
@@ -610,7 +643,7 @@
         
         .warning-box ul {
             list-style: none;
-            color: #78350F;
+            color: #CBD5E1;
         }
         
         .warning-box li {
@@ -625,73 +658,78 @@
             left: 0;
         }
         
-        /* Social Proof */
-        .testimonials {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-        }
-        
-        .testimonial {
-            background: #1a1a1a;
-            padding: 32px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-            border: 1px solid #333;
-        }
-        
+        /* Testimonials */
         .testimonial-stars {
-            color: #FCD34D;
+            color: #FBBF24;
             font-size: 20px;
             margin-bottom: 16px;
         }
         
         .testimonial-text {
             font-style: italic;
-            color: #D1D5DB;
+            color: #CBD5E1;
             margin-bottom: 16px;
             line-height: 1.7;
         }
         
         .testimonial-author {
             font-weight: 700;
-            color: #F3F4F6;
+            color: #F1F5F9;
         }
         
         .testimonial-role {
             font-size: 14px;
-            color: #6B7280;
+            color: #94A3B8;
         }
         
-        /* Final CTA Section */
+        /* Final CTA */
         .final-cta {
-            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
-            color: white;
-            padding: 80px 0;
+            background: linear-gradient(180deg, #0B0F14 0%, #1E293B 100%);
+            padding: 100px 0;
             text-align: center;
+            position: relative;
+        }
+        
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            pointer-events: none;
         }
         
         .final-cta h2 {
-            font-size: 40px;
+            font-size: 42px;
             font-weight: 800;
             margin-bottom: 20px;
+            color: #F1F5F9;
+            position: relative;
+            z-index: 1;
         }
         
         .final-cta p {
             font-size: 20px;
             margin-bottom: 40px;
-            opacity: 0.95;
+            color: #CBD5E1;
+            position: relative;
+            z-index: 1;
         }
         
         .cta-value {
             display: inline-block;
-            background: rgba(255,255,255,0.2);
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
             padding: 16px 32px;
             border-radius: 12px;
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 32px;
-            border: 2px solid rgba(255,255,255,0.3);
+            color: #C4B5FD;
+            position: relative;
+            z-index: 1;
         }
         
         .btn-final {
@@ -705,54 +743,68 @@
             text-decoration: none;
             box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
         
         .btn-final:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(239, 68, 68, 0.5);
+            box-shadow: 0 15px 40px rgba(239, 68, 68, 0.6);
         }
         
         /* Footer */
         .footer {
-            background: #111827;
+            background: #0B0F14;
             color: white;
-            padding: 32px 0;
+            padding: 40px 0;
             text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .footer p {
-            color: #9CA3AF;
+            color: #94A3B8;
         }
         
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 32px;
+                font-size: 36px;
             }
             
             .hero p {
                 font-size: 16px;
             }
             
-            .cta-box {
-                padding: 24px;
+            .section-title {
+                font-size: 32px;
             }
             
             .modal-content {
+                padding: 32px 24px;
+            }
+            
+            .problem-grid,
+            .benefits-grid,
+            .testimonials,
+            .bot-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .solution-box,
+            .bonus-box {
+                padding: 32px 24px;
+            }
+            
+            .step {
                 padding: 24px;
             }
             
-            .section-title {
-                font-size: 28px;
-            }
-            
-            .scanner-row {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-            
-            .final-cta h2 {
-                font-size: 28px;
+            .step:hover {
+                transform: none;
             }
         }
     </style>
@@ -762,28 +814,33 @@
 <!-- Hero Section -->
 <section class="hero">
     <div class="container">
-        <div class="hero-badge">🎁 Miễn phí Demo $10,000 - Không cần nạp tiền thật</div>
-        <h1>
-            BOT <span class="highlight">DCA & GRID</span> Tự Động<br>
-            Giao Dịch 24/7 - Không Cần Code
-        </h1>
-        <p>
-            Elirox Bot tự động trade theo chiến lược DCA hoặc GRID.<br>
-            Không cần kinh nghiệm. Không cần ngồi xem chart. Bot làm hết.
-        </p>
-        
-        <div class="hero-image-container">
+        <div class="hero-content">
+            <div class="hero-badge">🎁 Miễn phí Demo $10,000 - Không cần nạp tiền thật</div>
+            <h1>
+                BOT <span class="highlight">DCA & GRID</span> Tự Động<br>
+                Giao Dịch 24/7 - Không Cần Code
+            </h1>
+            <p>
+                Elirox Bot tự động trade theo chiến lược DCA hoặc GRID.<br>
+                Không cần kinh nghiệm. Không cần ngồi xem chart. Bot làm hết.
+            </p>
+        </div>
+    </div>
+    
+    <div class="hero-image-container">
+        <div class="hero-image-wrapper">
             <img src="https://github.com/mettatuan/elirox/blob/main/eliroxbot.jpg?raw=true" alt="Elirox Bot Dashboard" class="hero-image">
         </div>
-        
-        <div style="margin-top: 40px;">
-            <div class="value-tag" style="font-size: 16px; padding: 10px 24px;">🎁 Tặng Demo $10,000 + Dashboard Scanner ($500)</div>
+    </div>
+    
+    <div class="container">
+        <div class="hero-content">
+            <div class="value-tag">🎁 Tặng Demo $10,000 + Dashboard Scanner ($500)</div>
             <br><br>
             <button class="btn-open-form" id="openFormBtn">
                 🚀 Đăng Ký Miễn Phí Ngay →
             </button>
-            <br><br>
-            <div class="trust-line" style="color: rgba(255,255,255,0.9);">
+            <div class="trust-line">
                 ✅ 100% miễn phí · <strong>Không cần thẻ tín dụng</strong> · Nhận ngay sau 30s
             </div>
         </div>
@@ -794,7 +851,7 @@
 <div id="registerModal" class="modal">
     <div class="modal-content">
         <span class="modal-close" id="closeModal">&times;</span>
-        <h3 style="color: #A78BFA; margin-bottom: 8px; font-size: 28px;">🚀 Đăng Ký Elirox Bot</h3>
+        <h3 style="background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; font-size: 28px; font-weight: 800;">🚀 Đăng Ký Elirox Bot</h3>
         <div class="value-tag" style="margin-bottom: 24px;">Tặng Demo $10,000 + Scanner ($500)</div>
         
         <div id="formMessage" class="form-message" style="display: none;"></div>
@@ -820,7 +877,7 @@
             </button>
         </form>
         
-        <div class="trust-line" style="margin-top: 16px;">
+        <div class="trust-line" style="margin-top: 16px; text-align: center;">
             ✅ Thông tin được bảo mật · <strong>Không spam</strong>
         </div>
     </div>
@@ -870,7 +927,7 @@
 </section>
 
 <!-- Solution Section -->
-<section class="section solution-section">
+<section class="section section-alt">
     <div class="container">
         <div class="solution-box">
             <div class="solution-header">
@@ -879,37 +936,35 @@
             </div>
             
             <div class="scanner-preview">
-                <h3 style="text-align: center; margin-bottom: 32px; color: #1E40AF; font-size: 24px;">
+                <h3 style="text-align: center; margin-bottom: 32px; color: #C4B5FD; font-size: 24px; font-weight: 700;">
                     🤖 Elirox Bot Hoạt Động Như Thế Nào?
                 </h3>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
-                    <div style="background: white; padding: 24px; border-radius: 12px; border-left: 4px solid #10B981;">
-                        <h4 style="color: #10B981; font-size: 18px; margin-bottom: 12px;">🎯 BOT DCA</h4>
-                        <p style="color: #6B7280; line-height: 1.7; margin-bottom: 16px;">
+                <div class="bot-features">
+                    <div class="bot-feature dca">
+                        <h4>🎯 BOT DCA</h4>
+                        <p>
                             Mua dần đều theo chu kỳ cố định (mỗi giờ/ngày/tuần).
                         </p>
-                        <div style="background: #F0FDF4; padding: 12px; border-radius: 8px; font-size: 14px;">
+                        <div class="bot-example">
                             <strong>Ví dụ:</strong> Mua BTC $10 mỗi ngày → Giá cao mua ít, giá thấp mua nhiều → Giá trung bình tốt
                         </div>
                     </div>
                     
-                    <div style="background: white; padding: 24px; border-radius: 12px; border-left: 4px solid #3B82F6;">
-                        <h4 style="color: #3B82F6; font-size: 18px; margin-bottom: 12px;">📊 BOT GRID</h4>
-                        <p style="color: #6B7280; line-height: 1.7; margin-bottom: 16px;">
+                    <div class="bot-feature grid">
+                        <h4>📊 BOT GRID</h4>
+                        <p>
                             Đặt lưới lệnh mua/bán tự động trong khoảng giá.
                         </p>
-                        <div style="background: #EFF6FF; padding: 12px; border-radius: 8px; font-size: 14px;">
+                        <div class="bot-example">
                             <strong>Ví dụ:</strong> Giá $30K-$35K → Bot tự mua thấp/bán cao → Lời từ biến động
                         </div>
                     </div>
                 </div>
                 
-                <div style="margin-top: 32px; background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); padding: 24px; border-radius: 12px; border: 2px solid #F59E0B;">
-                    <h4 style="color: #92400E; font-size: 18px; margin-bottom: 12px; text-align: center;">
-                        ⚡ Bot Chạy 24/7 - Bạn Chỉ Cần Bật & Để Yên
-                    </h4>
-                    <p style="color: #78350F; text-align: center; font-size: 16px;">
+                <div class="highlight-box">
+                    <h4>⚡ Bot Chạy 24/7 - Bạn Chỉ Cần Bật & Để Yên</h4>
+                    <p>
                         Không cần ngồi xem chart. Bot tự vào lệnh đúng giờ, đúng giá, đúng chiến lược.
                     </p>
                 </div>
@@ -952,22 +1007,20 @@
             </div>
         </div>
         
-        <div style="margin-top: 48px; background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%); padding: 40px; border-radius: 16px; text-align: center;">
-            <h3 style="font-size: 24px; color: #1E40AF; margin-bottom: 16px;">
-                🎁 BONUS: Dashboard Scanner Miễn Phí ($500)
-            </h3>
-            <p style="color: #1F2937; font-size: 18px; margin-bottom: 16px;">
+        <div class="bonus-box">
+            <h3>🎁 BONUS: Dashboard Scanner Miễn Phí ($500)</h3>
+            <p>
                 Đăng ký Elirox → Nhận thêm Dashboard Scanner để lọc asset tốt nhất cho bot
             </p>
-            <p style="color: #6B7280; font-size: 14px;">
+            <small>
                 Scanner giúp bạn biết nên chạy bot trên coin nào → Tăng tỷ lệ thắng
-            </p>
+            </small>
         </div>
     </div>
 </section>
 
 <!-- How to Get Section -->
-<section class="section how-to-section">
+<section class="section section-alt">
     <div class="container">
         <div class="section-header">
             <h2 class="section-title">Cách Bắt Đầu Với Elirox Bot</h2>
@@ -1015,7 +1068,7 @@
 </section>
 
 <!-- Social Proof Section -->
-<section class="section" style="background: #F9FAFB;">
+<section class="section">
     <div class="container">
         <div class="section-header">
             <h2 class="section-title">User Đang Dùng Elirox Bot Nói Gì?</h2>
@@ -1147,7 +1200,7 @@ form.addEventListener('submit', async (e) => {
     try {
         // Send to Google Sheet theo format của google_apps_script_FINAL.js
         const formData = new FormData();
-        formData.append('name', fullName);        // Tên field theo CONFIG.COLUMNS
+        formData.append('name', fullName);
         formData.append('telegram', telegram);
         formData.append('email', email);
         formData.append('source', 'Landing Page Elirox');
@@ -1158,7 +1211,7 @@ form.addEventListener('submit', async (e) => {
         const response = await fetch(SHEET_URL, {
             method: 'POST',
             body: formData,
-            mode: 'no-cors'  // Google Apps Script yêu cầu no-cors
+            mode: 'no-cors'
         });
         
         // no-cors mode không trả về response, assume success
@@ -1171,7 +1224,6 @@ form.addEventListener('submit', async (e) => {
         
     } catch (error) {
         console.error('Error:', error);
-        // Vẫn redirect vì no-cors mode không cho phép đọc response
         showMessage('✅ Đăng ký đã được gửi! Đang chuyển hướng...', 'success');
         setTimeout(() => {
             window.location.href = AFFILIATE_LINK;
