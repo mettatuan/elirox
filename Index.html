@@ -30,7 +30,7 @@
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(180deg, #0B0F14 0%, #1E293B 100%);
+            background: #000000;
             position: relative;
             padding: 100px 0 80px;
             overflow: hidden;
@@ -104,15 +104,15 @@
         }
         
         .hero-image-wrapper {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 24px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
         }
         
         .hero-image {
             width: 100%;
             height: auto;
-            border-radius: 8px;
+            display: block;
             box-shadow: 
                 0 20px 60px rgba(0, 0, 0, 0.6),
                 0 0 80px rgba(99, 102, 241, 0.2);
@@ -1140,31 +1140,60 @@ const form = document.getElementById('registerForm');
 const submitBtn = document.getElementById('submitBtn');
 const formMessage = document.getElementById('formMessage');
 
+console.log('Modal elements:', { modal, openFormBtn, closeModal });
+
+// Open modal function
+function openModal() {
+    console.log('Opening modal...');
+    if (modal) {
+        modal.classList.add('active');
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        console.log('Modal opened, classes:', modal.className);
+    } else {
+        console.error('Modal element not found!');
+    }
+}
+
 // Open modal
-openFormBtn.addEventListener('click', () => {
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-});
+if (openFormBtn) {
+    openFormBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Button clicked!');
+        openModal();
+    });
+} else {
+    console.error('Open form button not found!');
+}
 
-// Close modal
-closeModal.addEventListener('click', () => {
-    modal.classList.remove('active');
-    document.body.style.overflow = 'auto';
-});
-
-// Close modal when clicking outside
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
+// Close modal function
+function closeModalFunc() {
+    console.log('Closing modal...');
+    if (modal) {
         modal.classList.remove('active');
+        modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
-});
+}
+
+// Close modal
+if (closeModal) {
+    closeModal.addEventListener('click', closeModalFunc);
+}
+
+// Close modal when clicking outside
+if (modal) {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModalFunc();
+        }
+    });
+}
 
 // Close modal on ESC key
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) {
-        modal.classList.remove('active');
-        document.body.style.overflow = 'auto';
+    if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+        closeModalFunc();
     }
 });
 
