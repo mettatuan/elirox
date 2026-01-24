@@ -1114,9 +1114,9 @@
             🎁 Demo $10,000 + Dashboard Scanner ($500) - Miễn phí 100%
         </div>
         <br>
-        <a href="https://click.eliroxlink.com/U2uaaCBz" class="btn-final" target="_blank">
+        <button class="btn-final" id="openFormBtn2">
             Dùng Thử Elirox Bot Miễn Phí →
-        </a>
+        </button>
     </div>
 </section>
 
@@ -1155,15 +1155,27 @@ function openModal() {
     }
 }
 
-// Open modal
+// Open modal - First button (hero section)
 if (openFormBtn) {
     openFormBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('Button clicked!');
+        console.log('Button 1 clicked!');
         openModal();
     });
 } else {
     console.error('Open form button not found!');
+}
+
+// Open modal - Second button (final CTA)
+const openFormBtn2 = document.getElementById('openFormBtn2');
+if (openFormBtn2) {
+    openFormBtn2.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Button 2 clicked!');
+        openModal();
+    });
+} else {
+    console.error('Second open form button not found!');
 }
 
 // Close modal function
@@ -1244,19 +1256,19 @@ form.addEventListener('submit', async (e) => {
         });
         
         // no-cors mode không trả về response, assume success
-        showMessage('✅ Đăng ký thành công! Đang chuyển hướng...', 'success');
+        showMessage('✅ Đăng ký thành công! Bấm @eliroxbot trên Telegram để nhận Dashboard Scanner miễn phí. Đang chuyển hướng...', 'success');
         
-        // Redirect after 2 seconds
+        // Redirect after 3 seconds (more time to read message)
         setTimeout(() => {
             window.location.href = AFFILIATE_LINK;
-        }, 2000);
+        }, 3000);
         
     } catch (error) {
         console.error('Error:', error);
-        showMessage('✅ Đăng ký đã được gửi! Đang chuyển hướng...', 'success');
+        showMessage('✅ Đăng ký đã được gửi! Bấm @eliroxbot trên Telegram để nhận Dashboard Scanner miễn phí. Đang chuyển hướng...', 'success');
         setTimeout(() => {
             window.location.href = AFFILIATE_LINK;
-        }, 2000);
+        }, 3000);
     }
 });
 </script>
