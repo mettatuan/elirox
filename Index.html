@@ -1440,7 +1440,7 @@ form.addEventListener('submit', async (e) => {
     submitBtn.innerHTML = '⏳ Đang xử lý...';
     
     try {
-        // Send to Google Sheet theo format của google_apps_script_FINAL.js
+        // Prepare data for Google Sheet
         const formData = new FormData();
         formData.append('name', fullName);
         formData.append('telegram', telegram);
@@ -1450,17 +1450,24 @@ form.addEventListener('submit', async (e) => {
         console.log('Sending data to:', SHEET_URL);
         console.log('Data:', { name: fullName, telegram, email });
         
-        // Send to Google Sheet (no-cors mode)
-        fetch(SHEET_URL, {
-            method: 'POST',
-            body: formData,
-            mode: 'no-cors'
-        }).catch(error => {
-            console.log('Sheet submission (no-cors):', error);
-        });
+        // Send to Google Sheet with proper await
+        try {
+            const response = await fetch(SHEET_URL, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors' // Google Apps Script requires no-cors
+            });
+            
+            console.log('✅ Data sent to Google Sheet successfully');
+        } catch (fetchError) {
+            console.error('⚠️ Fetch error (expected with no-cors):', fetchError);
+            // With no-cors mode, we can't read response, but data should still be sent
+        }
         
-        // ALWAYS show success popup (don't wait for response)
-        // Because no-cors mode doesn't return response
+        // Small delay to ensure request is sent before showing popup
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Show success popup
         console.log('Form submitted, showing success popup...');
         showSuccessPopup();
         
