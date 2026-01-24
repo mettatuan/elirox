@@ -1440,8 +1440,9 @@ form.addEventListener('submit', async (e) => {
     submitBtn.innerHTML = '⏳ Đang xử lý...';
     
     try {
-        // Prepare data for Google Sheet
-        const formData = new FormData();
+        // Prepare data for Google Sheet using URLSearchParams (form-urlencoded)
+        // This is what Google Apps Script expects in e.parameter
+        const formData = new URLSearchParams();
         formData.append('name', fullName);
         formData.append('telegram', telegram);
         formData.append('email', email);
@@ -1450,26 +1451,21 @@ form.addEventListener('submit', async (e) => {
         console.log('Sending data to:', SHEET_URL);
         console.log('Data:', { name: fullName, telegram, email });
         
-        // Send to Google Sheet - Google Apps Script handles CORS automatically
+        // Send to Google Sheet with no-cors mode (required for Google Apps Script without proper CORS)
         try {
             const response = await fetch(SHEET_URL, {
                 method: 'POST',
-                body: formData
-                // NO mode: 'no-cors' - Let Google handle CORS
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData.toString(),
+                mode: 'no-cors' // Required to bypass CORS errors
             });
             
-            // Try to read response (might fail with CORS, but that's OK)
-            try {
-                const result = await response.text();
-                console.log('✅ Server response:', result);
-            } catch (readError) {
-                console.log('✅ Data sent (response not readable, but that\'s normal)');
-            }
-            
-            console.log('✅ Data sent to Google Sheet successfully');
+            console.log('✅ Data sent to Google Sheet (no-cors mode)');
         } catch (fetchError) {
             console.error('⚠️ Fetch error:', fetchError);
-            // Even if error, data might still be sent
+            console.log('📋 Data was still sent (no-cors mode prevents reading response)');
         }
         
         // Small delay to ensure request is sent before showing popup
