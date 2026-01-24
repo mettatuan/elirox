@@ -1,559 +1,1184 @@
-/**
- * ============================================
- * ELIROX BOT - REGISTRATION BACKEND
- * Google Apps Script - Production Version with Update Status
- * ============================================
- * 
- * Xử lý đăng ký từ:
- * - Web form: https://tool.eliroxbot.com
- * - Telegram Bot: @EliroxBot
- * 
- * UPDATED: Added update_status action for bot integration
- * Last updated: 2026-01-24
- */
-
-// ============================================
-// CONFIGURATION
-// ============================================
-
-const CONFIG = {
-  SHEET_NAME: 'Registrations',
-  DEFAULT_STATUS: 'Chờ duyệt',
-  TIMEZONE: 'Asia/Ho_Chi_Minh',
-  
-  // Column mapping (0-based index)
-  COLUMNS: {
-    DATE: 0,        // A: 📅 Ngày đăng ký
-    NAME: 1,        // B: Họ & Tên
-    TELEGRAM: 2,    // C: 👤 Telegram
-    EMAIL: 3,       // D: 📧 Email
-    SOURCE: 4,      // E: 📍 Nguồn
-    STATUS: 5       // F: 📊 Trạng thái
-  },
-  
-  // Column headers
-  HEADERS: [
-    '📅 Ngày đăng ký',
-    'Họ & Tên',
-    '👤 Telegram',
-    '📧 Email',
-    '📍 Nguồn',
-    '📊 Trạng thái'
-  ]
-};
-
-// ============================================
-// MAIN HANDLERS
-// ============================================
-
-/**
- * Handle GET requests - Lấy danh sách registrations
- */
-function doGet(e) {
-  try {
-    const sheet = getOrCreateSheet();
-    const data = sheet.getDataRange().getValues();
-    
-    // Skip header row
-    const headers = data[0];
-    const result = [];
-    
-    for (let i = 1; i < data.length; i++) {
-      const row = {};
-      for (let j = 0; j < headers.length; j++) {
-        row[headers[j]] = data[i][j];
-      }
-      result.push(row);
-    }
-    
-    return createResponse(true, 'Data fetched successfully', result);
-    
-  } catch (error) {
-    logError('doGet', error);
-    return createResponse(false, 'Server error: ' + error.message);
-  }
-}
-
-/**
- * Handle POST requests - Thêm registration mới HOẶC cập nhật trạng thái
- */
-function doPost(e) {
-  try {
-    // Parse request body
-    const data = parseRequestData(e);
-    
-    // ============================================
-    // NEW: Handle update_status action from bot
-    // ============================================
-    if (data.action === 'update_status') {
-      logInfo('doPost', `Update status request for email: ${data.email}, status: ${data.status}`);
-      
-      if (!data.email || !data.status) {
-        return createResponse(false, 'Missing email or status for update');
-      }
-      
-      const updateResult = updateUserStatus(data.email, data.status);
-      
-      if (updateResult.success) {
-        return createResponse(true, updateResult.message);
-      } else {
-        return createResponse(false, updateResult.message);
-      }
-    }
-    
-    // ============================================
-    // Original registration logic
-    // ============================================
-    
-    // TEMPORARILY DISABLE VALIDATION FOR DEBUGGING
-    // const validation = validateInput(data);
-    // if (!validation.valid) {
-    //   return createResponse(false, validation.message);
-    // }
-    
-    // Log received data for debugging
-    logInfo('doPost', `Received registration: ${JSON.stringify(data)}`);
-    
-    // Check for duplicates (only email to avoid blocking)
-    if (data.email) {
-      const duplicate = checkDuplicate(data.email, data.telegram);
-      if (duplicate.exists) {
-        return createResponse(false, duplicate.message);
-      }
-    }
-    
-    // Add to sheet
-    const result = addRegistration(data);
-    
-    if (result.success) {
-      // Get sheet info for debugging
-      const sheet = getOrCreateSheet();
-      const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-      
-      return createResponse(true, 'Đăng ký thành công! Chúng tôi sẽ liên hệ bạn trong vòng 24h.', {
-        rowNumber: result.rowNumber,
-        receivedData: data,  // Return what was received for debugging
-        sheetInfo: {
-          spreadsheetName: spreadsheet.getName(),
-          spreadsheetId: spreadsheet.getId(),
-          sheetName: sheet.getName(),
-          totalRows: sheet.getLastRow(),
-          url: spreadsheet.getUrl()
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elirox Bot - BOT DCA/GRID Tự Động 24/7 | Miễn Phí Demo $10,000</title>
+    <meta name="description" content="BOT tự động DCA & GRID giao dịch 24/7. Không cần code, không cần trải nghiệm. Tặng Demo $10,000 + Dashboard Scanner miễn phí.">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/mettatuan/elirox/refs/heads/main/elirox%20favi.jfif">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-      });
-    } else {
-      return createResponse(false, 'Không thể lưu dữ liệu: ' + result.error);
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            color: #E5E7EB;
+            line-height: 1.6;
+            background: #0F172A;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+            color: white;
+            padding: 80px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-image-container {
+            margin: 48px 0 32px;
+            text-align: center;
+        }
+        
+        .hero-image {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        /* Modal Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: #1a1a1a;
+            padding: 48px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            border: 1px solid #333;
+            animation: slideUp 0.3s ease;
+        }
+        
+        .modal-close {
+            float: right;
+            font-size: 32px;
+            font-weight: 700;
+            color: #94A3B8;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            color: #EF4444;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="1" fill="white" opacity="0.1"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .hero .highlight {
+            color: #FCD34D;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-box {
+            background: #1E293B;
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid #334155;
+        }
+        
+        .btn-open-form {
+            display: inline-block;
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            color: white;
+            padding: 20px 60px;
+            font-size: 20px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+        }
+        
+        .btn-open-form:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
+        }
+        
+        .cta-box h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #A78BFA;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #E5E7EB;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #000000;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #A78BFA;
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
+        }
+        
+        .form-group input::placeholder {
+            color: #64748B;
+        }
+        
+        .form-message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .form-message.success {
+            background: #065F46;
+            color: #D1FAE5;
+        }
+        
+        .form-message.error {
+            background: #991B1B;
+            color: #FEE2E2;
+        }
+        
+        .value-tag {
+            display: inline-block;
+            background: #FEF3C7;
+            color: #92400E;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .btn-cta {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            color: white;
+            padding: 20px 40px;
+            font-size: 20px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+        }
+        
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+        }
+        
+        .btn-cta-arrow {
+            margin-left: 8px;
+        }
+        
+        .trust-line {
+            margin-top: 16px;
+            font-size: 14px;
+            color: #6B7280;
+        }
+        
+        .trust-line strong {
+            color: #1E40AF;
+        }
+        
+        /* Problem Section */
+        .section {
+            padding: 80px 0;
+            background: #0F172A;
+        }
+        
+        .section-dark {
+            background: #000000;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #F3F4F6;
+            margin-bottom: 16px;
+        }
+        
+        .section-subtitle {
+            font-size: 18px;
+            color: #9CA3AF;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .problem-card {
+            background: #1a1a1a;
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            border-left: 4px solid #EF4444;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+        
+        .problem-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+        
+        .problem-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #F3F4F6;
+        }
+        
+        .problem-card p {
+            color: #9CA3AF;
+            line-height: 1.6;
+        }
+        
+        .result-box {
+            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+            border: 2px solid #EF4444;
+            padding: 32px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .result-box h3 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #DC2626;
+            margin-bottom: 12px;
+        }
+        
+        .result-box p {
+            font-size: 18px;
+            color: #991B1B;
+        }
+        
+        /* Solution Section */
+        .solution-section {
+            background: #000000;
+        }
+        
+        .solution-box {
+            background: #1a1a1a;
+            padding: 48px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+            border: 1px solid #333;
+        }
+        
+        .solution-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        .solution-header h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #A78BFA;
+            margin-bottom: 16px;
+        }
+        
+        .solution-header p {
+            font-size: 18px;
+            color: #9CA3AF;
+        }
+        
+        .scanner-preview {
+            background: #000000;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            border: 2px solid #6366F1;
+        }
+        
+        .scanner-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 16px;
+            padding: 16px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            align-items: center;
+            border-left: 4px solid #10B981;
+        }
+        
+        .scanner-row.red {
+            border-left-color: #EF4444;
+        }
+        
+        .scanner-row.yellow {
+            border-left-color: #F59E0B;
+        }
+        
+        .asset {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .score {
+            font-weight: 800;
+            font-size: 20px;
+        }
+        
+        .score.high {
+            color: #10B981;
+        }
+        
+        .score.low {
+            color: #EF4444;
+        }
+        
+        .score.mid {
+            color: #F59E0B;
+        }
+        
+        .trend {
+            font-size: 14px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .trend.up {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .trend.down {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .action {
+            font-weight: 700;
+            font-size: 14px;
+            padding: 6px 16px;
+            border-radius: 20px;
+        }
+        
+        .action.buy {
+            background: #10B981;
+            color: white;
+        }
+        
+        .action.avoid {
+            background: #EF4444;
+            color: white;
+        }
+        
+        .action.wait {
+            background: #F59E0B;
+            color: white;
+        }
+        
+        /* Benefits Section */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+        }
+        
+        .benefit-card {
+            text-align: center;
+            padding: 32px;
+        }
+        
+        .benefit-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+        }
+        
+        .benefit-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #F3F4F6;
+        }
+        
+        .benefit-card p {
+            color: #9CA3AF;
+            line-height: 1.6;
+        }
+        
+        /* How to Get Section */
+        .how-to-section {
+            background: #000000;
+        }
+        
+        .steps {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            border: 1px solid #333;
+            border-left: 4px solid #8B5CF6;
+        }
+        
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        
+        .step-content h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #F3F4F6;
+        }
+        
+        .step-content p {
+            color: #9CA3AF;
+        }
+        
+        .step-link {
+            display: inline-block;
+            margin-top: 8px;
+            color: #A78BFA;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .step-link:hover {
+            text-decoration: underline;
+        }
+        
+        .warning-box {
+            background: #FEF3C7;
+            border: 2px solid #F59E0B;
+            padding: 24px;
+            border-radius: 12px;
+            margin-top: 32px;
+        }
+        
+        .warning-box h4 {
+            color: #92400E;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .warning-box ul {
+            list-style: none;
+            color: #78350F;
+        }
+        
+        .warning-box li {
+            margin-bottom: 8px;
+            padding-left: 24px;
+            position: relative;
+        }
+        
+        .warning-box li::before {
+            content: '⚠️';
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Social Proof */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .testimonial {
+            background: #1a1a1a;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+        
+        .testimonial-stars {
+            color: #FCD34D;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            color: #D1D5DB;
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+        
+        .testimonial-author {
+            font-weight: 700;
+            color: #F3F4F6;
+        }
+        
+        .testimonial-role {
+            font-size: 14px;
+            color: #6B7280;
+        }
+        
+        /* Final CTA Section */
+        .final-cta {
+            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .final-cta h2 {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        
+        .final-cta p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+        
+        .cta-value {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .btn-final {
+            display: inline-block;
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            color: white;
+            padding: 24px 60px;
+            font-size: 22px;
+            font-weight: 700;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-final:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(239, 68, 68, 0.5);
+        }
+        
+        /* Footer */
+        .footer {
+            background: #111827;
+            color: white;
+            padding: 32px 0;
+            text-align: center;
+        }
+        
+        .footer p {
+            color: #9CA3AF;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .cta-box {
+                padding: 24px;
+            }
+            
+            .modal-content {
+                padding: 24px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .scanner-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .final-cta h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-badge">🎁 Miễn phí Demo $10,000 - Không cần nạp tiền thật</div>
+        <h1>
+            BOT <span class="highlight">DCA & GRID</span> Tự Động<br>
+            Giao Dịch 24/7 - Không Cần Code
+        </h1>
+        <p>
+            Elirox Bot tự động trade theo chiến lược DCA hoặc GRID.<br>
+            Không cần kinh nghiệm. Không cần ngồi xem chart. Bot làm hết.
+        </p>
+        
+        <div class="hero-image-container">
+            <img src="https://github.com/mettatuan/elirox/blob/main/eliroxbot.jpg?raw=true" alt="Elirox Bot Dashboard" class="hero-image">
+        </div>
+        
+        <div style="margin-top: 40px;">
+            <div class="value-tag" style="font-size: 16px; padding: 10px 24px;">🎁 Tặng Demo $10,000 + Dashboard Scanner ($500)</div>
+            <br><br>
+            <button class="btn-open-form" id="openFormBtn">
+                🚀 Đăng Ký Miễn Phí Ngay →
+            </button>
+            <br><br>
+            <div class="trust-line" style="color: rgba(255,255,255,0.9);">
+                ✅ 100% miễn phí · <strong>Không cần thẻ tín dụng</strong> · Nhận ngay sau 30s
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal Form -->
+<div id="registerModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" id="closeModal">&times;</span>
+        <h3 style="color: #A78BFA; margin-bottom: 8px; font-size: 28px;">🚀 Đăng Ký Elirox Bot</h3>
+        <div class="value-tag" style="margin-bottom: 24px;">Tặng Demo $10,000 + Scanner ($500)</div>
+        
+        <div id="formMessage" class="form-message" style="display: none;"></div>
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="fullName">👤 Họ & Tên</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Nguyễn Văn A" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="telegram">💬 Telegram Username</label>
+                <input type="text" id="telegram" name="telegram" placeholder="@username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">📧 Email</label>
+                <input type="email" id="email" name="email" placeholder="email@example.com" required>
+            </div>
+            
+            <button type="submit" class="btn-cta" id="submitBtn">
+                Đăng Ký Ngay - Nhận Demo $10K <span class="btn-cta-arrow">→</span>
+            </button>
+        </form>
+        
+        <div class="trust-line" style="margin-top: 16px;">
+            ✅ Thông tin được bảo mật · <strong>Không spam</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Problem Section -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Vì Sao Trade Thủ Công Mãi Không Lời?</h2>
+            <p class="section-subtitle">
+                Không phải bạn kém. Vấn đề là bạn đang dùng sai cách.
+            </p>
+        </div>
+        
+        <div class="problem-grid">
+            <div class="problem-card">
+                <div class="problem-icon">😰</div>
+                <h3>Mất Lệnh Vì Ngủ/Bận Việc</h3>
+                <p>Giá vừa đẹp → Bạn không ở máy → Bỏ lỡ điểm vào hoàn hảo → Tiếc hùi hụi</p>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-icon">📉</div>
+                <h3>Cảm Xúc Chi Phối Quyết Định</h3>
+                <p>Giá tăng → FOMO mua đỉnh. Giá giảm → Hoảng loạn bán đáy. Lặp đi lặp lại</p>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-icon">😱</div>
+                <h3>Không Có Chiến Lược Rõ Ràng</h3>
+                <p>Vào lệnh theo cảm giác → Không biết chốt lời ở đâu → Trade lung tung</p>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-icon">⏰</div>
+                <h3>Mất Hàng Giờ Ngồi Xem Chart</h3>
+                <p>Cả ngày dán mắt vào chart → Mệt mỏi, stress → Vẫn không lời</p>
+            </div>
+        </div>
+        
+        <div class="result-box">
+            <h3>Kết quả? Trade thủ công = Mệt + Thua liên tục</h3>
+            <p>Bạn cần bot tự động làm hộ - Chính xác, kỷ luật, không cảm xúc</p>
+        </div>
+    </div>
+</section>
+
+<!-- Solution Section -->
+<section class="section solution-section">
+    <div class="container">
+        <div class="solution-box">
+            <div class="solution-header">
+                <h2>Giải Pháp: Elirox Bot - DCA & GRID Tự Động</h2>
+                <p>Bot giao dịch 24/7 theo chiến lược rõ ràng - Không cảm xúc, không bỏ lỡ cơ hội</p>
+            </div>
+            
+            <div class="scanner-preview">
+                <h3 style="text-align: center; margin-bottom: 32px; color: #1E40AF; font-size: 24px;">
+                    🤖 Elirox Bot Hoạt Động Như Thế Nào?
+                </h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+                    <div style="background: white; padding: 24px; border-radius: 12px; border-left: 4px solid #10B981;">
+                        <h4 style="color: #10B981; font-size: 18px; margin-bottom: 12px;">🎯 BOT DCA</h4>
+                        <p style="color: #6B7280; line-height: 1.7; margin-bottom: 16px;">
+                            Mua dần đều theo chu kỳ cố định (mỗi giờ/ngày/tuần).
+                        </p>
+                        <div style="background: #F0FDF4; padding: 12px; border-radius: 8px; font-size: 14px;">
+                            <strong>Ví dụ:</strong> Mua BTC $10 mỗi ngày → Giá cao mua ít, giá thấp mua nhiều → Giá trung bình tốt
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 24px; border-radius: 12px; border-left: 4px solid #3B82F6;">
+                        <h4 style="color: #3B82F6; font-size: 18px; margin-bottom: 12px;">📊 BOT GRID</h4>
+                        <p style="color: #6B7280; line-height: 1.7; margin-bottom: 16px;">
+                            Đặt lưới lệnh mua/bán tự động trong khoảng giá.
+                        </p>
+                        <div style="background: #EFF6FF; padding: 12px; border-radius: 8px; font-size: 14px;">
+                            <strong>Ví dụ:</strong> Giá $30K-$35K → Bot tự mua thấp/bán cao → Lời từ biến động
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 32px; background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); padding: 24px; border-radius: 12px; border: 2px solid #F59E0B;">
+                    <h4 style="color: #92400E; font-size: 18px; margin-bottom: 12px; text-align: center;">
+                        ⚡ Bot Chạy 24/7 - Bạn Chỉ Cần Bật & Để Yên
+                    </h4>
+                    <p style="color: #78350F; text-align: center; font-size: 16px;">
+                        Không cần ngồi xem chart. Bot tự vào lệnh đúng giờ, đúng giá, đúng chiến lược.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Tại Sao Chọn Elirox Bot?</h2>
+            <p class="section-subtitle">Không phải lý thuyết. Đây là lợi ích thực tế bạn nhận được.</p>
+        </div>
+        
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">🤖</div>
+                <h3>Trade 24/7 Tự Động</h3>
+                <p>Bot không ngủ, không nghỉ. Giao dịch liên tục cả khi bạn đi làm, đi chơi, ngủ</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">🎯</div>
+                <h3>Không Cần Kinh Nghiệm</h3>
+                <p>Chọn chiến lược DCA/GRID có sẵn → Điều chỉnh tham số đơn giản → Bật bot → Xong</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">🧠</div>
+                <h3>Loại Bỏ Cảm Xúc</h3>
+                <p>Bot trade theo chiến lược cố định. Không FOMO, không hoảng loạn, không sai lầm do cảm xúc</p>
+            </div>
+            
+            <div class="benefit-card">
+                <div class="benefit-icon">🎁</div>
+                <h3>Tặng Demo $10,000</h3>
+                <p>Chạy thử hoàn toàn miễn phí. Không mất tiền thật. Test chiến lược trước khi nạp vốn</p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 48px; background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%); padding: 40px; border-radius: 16px; text-align: center;">
+            <h3 style="font-size: 24px; color: #1E40AF; margin-bottom: 16px;">
+                🎁 BONUS: Dashboard Scanner Miễn Phí ($500)
+            </h3>
+            <p style="color: #1F2937; font-size: 18px; margin-bottom: 16px;">
+                Đăng ký Elirox → Nhận thêm Dashboard Scanner để lọc asset tốt nhất cho bot
+            </p>
+            <p style="color: #6B7280; font-size: 14px;">
+                Scanner giúp bạn biết nên chạy bot trên coin nào → Tăng tỷ lệ thắng
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- How to Get Section -->
+<section class="section how-to-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Cách Bắt Đầu Với Elirox Bot</h2>
+            <p class="section-subtitle">3 bước đơn giản - Chạy bot trong vài phút</p>
+        </div>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Đăng ký tài khoản miễn phí</h3>
+                    <p>Click link bên dưới để tạo tài khoản Elirox</p>
+                    <a href="https://click.eliroxlink.com/U2uaaCBz" target="_blank" class="step-link">
+                        👉 Đăng ký ngay tại đây
+                    </a>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Nhận Demo $10,000 + Scanner</h3>
+                    <p>Tài khoản demo để chạy thử bot. Dashboard Scanner gửi vào email</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Chọn chiến lược & Bật bot</h3>
+                    <p>Chọn DCA hoặc GRID → Điều chỉnh tham số → Bật bot → Xong!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <h4>⚠️ LƯU Ý QUAN TRỌNG:</h4>
+            <ul>
+                <li>Dùng ĐÚNG LINK trên để nhận đầy đủ ưu đãi (Demo + Scanner)</li>
+                <li>Demo $10,000 hoàn toàn miễn phí - Không cần nạp tiền thật</li>
+                <li>Test kỹ chiến lược trên Demo trước khi chạy tiền thật</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Social Proof Section -->
+<section class="section" style="background: #F9FAFB;">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">User Đang Dùng Elirox Bot Nói Gì?</h2>
+        </div>
+        
+        <div class="testimonials">
+            <div class="testimonial">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <div class="testimonial-text">
+                    "Bot chạy DCA giúp tôi không còn bị FOMO. Giá cao bot mua ít, giá thấp bot mua nhiều. Giờ giá trung bình rất tốt, tôi chỉ cần đợi lời."
+                </div>
+                <div class="testimonial-author">Minh Tuấn</div>
+                <div class="testimonial-role">Trader 2 năm</div>
+            </div>
+            
+            <div class="testimonial">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <div class="testimonial-text">
+                    "Bot GRID giúp tôi lời từ biến động. Không cần ngồi xem chart cả ngày. Bot tự mua thấp bán cao trong khoảng giá. Đỉnh!"
+                </div>
+                <div class="testimonial-author">Hoàng Long</div>
+                <div class="testimonial-role">Full-time crypto trader</div>
+            </div>
+            
+            <div class="testimonial">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <div class="testimonial-text">
+                    "Tôi mới trade 6 tháng, không biết gì. Demo $10K giúp tôi test kỹ trước. Scanner tặng kèm giúp chọn coin tốt. Rất hài lòng!"
+                </div>
+                <div class="testimonial-author">Thanh Hà</div>
+                <div class="testimonial-role">Trader mới</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA Section -->
+<section class="final-cta">
+    <div class="container">
+        <h2>Bắt Đầu Với Elirox Bot Miễn Phí Ngay Hôm Nay</h2>
+        <p>Đừng để mất thêm tiền vì trade thủ công thiếu kỷ luật</p>
+        <div class="cta-value">
+            🎁 Demo $10,000 + Dashboard Scanner ($500) - Miễn phí 100%
+        </div>
+        <br>
+        <a href="https://click.eliroxlink.com/U2uaaCBz" class="btn-final" target="_blank">
+            Dùng Thử Elirox Bot Miễn Phí →
+        </a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2026 EliroxBot. Công cụ hỗ trợ trader thông minh hơn.</p>
+    </div>
+</footer>
+
+<script>
+// Google Sheet Integration - Sử dụng google_apps_script_FINAL.js
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbx0nRpQMIkOjzmZ1_4z8FXzL-rQ_QgzGtojTd_MI6ZKFdDDqKZqBxwOMu4MRO3MrTNb/exec';
+const AFFILIATE_LINK = 'https://click.eliroxlink.com/U2uaaCBz';
+
+// Modal controls
+const modal = document.getElementById('registerModal');
+const openFormBtn = document.getElementById('openFormBtn');
+const closeModal = document.getElementById('closeModal');
+const form = document.getElementById('registerForm');
+const submitBtn = document.getElementById('submitBtn');
+const formMessage = document.getElementById('formMessage');
+
+// Open modal
+openFormBtn.addEventListener('click', () => {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+});
+
+// Close modal
+closeModal.addEventListener('click', () => {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+});
+
+// Close modal when clicking outside
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
     }
-    
-  } catch (error) {
-    logError('doPost', error);
-    return createResponse(false, 'Lỗi hệ thống: ' + error.message);
-  }
+});
+
+// Close modal on ESC key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
+function showMessage(message, type) {
+    formMessage.textContent = message;
+    formMessage.className = `form-message ${type}`;
+    formMessage.style.display = 'block';
 }
 
-// ============================================
-// CORE FUNCTIONS
-// ============================================
-
-/**
- * Get or create sheet with proper headers
- */
-function getOrCreateSheet() {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = spreadsheet.getSheetByName(CONFIG.SHEET_NAME);
-  
-  // Create sheet if not exists
-  if (!sheet) {
-    sheet = spreadsheet.insertSheet(CONFIG.SHEET_NAME);
-    
-    // Set headers
-    const headerRange = sheet.getRange(1, 1, 1, CONFIG.HEADERS.length);
-    headerRange.setValues([CONFIG.HEADERS]);
-    
-    // Format headers
-    headerRange
-      .setFontWeight('bold')
-      .setBackground('#4285f4')
-      .setFontColor('#ffffff')
-      .setHorizontalAlignment('center');
-    
-    // Freeze header row
-    sheet.setFrozenRows(1);
-    
-    // Auto-resize columns
-    for (let i = 1; i <= CONFIG.HEADERS.length; i++) {
-      sheet.autoResizeColumn(i);
-    }
-  }
-  
-  return sheet;
+function hideMessage() {
+    formMessage.style.display = 'none';
 }
 
-/**
- * Parse request data from POST
- */
-function parseRequestData(e) {
-  try {
-    if (!e || !e.postData) {
-      throw new Error('No POST data received');
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideMessage();
+    
+    // Get form values
+    const fullName = document.getElementById('fullName').value.trim();
+    const telegram = document.getElementById('telegram').value.trim();
+    const email = document.getElementById('email').value.trim();
+    
+    // Validate
+    if (!fullName || !telegram || !email) {
+        showMessage('❌ Vui lòng điền đầy đủ thông tin!', 'error');
+        return;
     }
     
-    const contentType = e.postData.type;
-    const rawContent = e.postData.contents;
-    let data;
+    // Disable button
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '⏳ Đang xử lý...';
     
-    // Log for debugging
-    logInfo('parseRequestData', `Content-Type: ${contentType}`);
-    
-    // Parse JSON regardless of content type
     try {
-      data = JSON.parse(rawContent);
-    } catch (parseError) {
-      logError('parseRequestData', `JSON parse failed: ${parseError.message}`);
-      throw new Error('Invalid JSON format');
-    }
-    
-    // Check if this is an update_status request (different structure)
-    if (data.action === 'update_status') {
-      logInfo('parseRequestData', `Parsed update_status: ${JSON.stringify(data)}`);
-      return {
-        action: 'update_status',
-        telegram_id: data.telegram_id,
-        email: (data.email || '').trim().toLowerCase(),
-        status: data.status || 'Approved'
-      };
-    }
-    
-    // Validate required fields for registration
-    if (!data.email) {
-      throw new Error('Missing required field: email');
-    }
-    
-    return {
-      fullName: (data.fullName || data.name || '').trim(),
-      telegram: (data.telegram || '').trim(),
-      email: (data.email || '').trim().toLowerCase(),
-      source: (data.source || 'Web Form').trim()
-    };
-    
-  } catch (error) {
-    logError('parseRequestData', error);
-    throw new Error('Invalid request format: ' + error.message);
-  }
-}
-
-/**
- * Validate input data
- */
-function validateInput(data) {
-  // Check required fields
-  if (!data.email || data.email.length === 0) {
-    return { valid: false, message: 'Email không được để trống' };
-  }
-  
-  if (!data.telegram || data.telegram.length === 0) {
-    return { valid: false, message: 'Telegram không được để trống' };
-  }
-  
-  if (!data.fullName || data.fullName.length === 0) {
-    return { valid: false, message: 'Họ tên không được để trống' };
-  }
-  
-  // Validate email format
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(data.email)) {
-    return { valid: false, message: 'Email không đúng định dạng' };
-  }
-  
-  // Validate Telegram format (should start with @ or be username)
-  if (data.telegram && !data.telegram.startsWith('@')) {
-    data.telegram = '@' + data.telegram;
-  }
-  
-  return { valid: true };
-}
-
-/**
- * Check for duplicate registrations
- */
-function checkDuplicate(email, telegram) {
-  const sheet = getOrCreateSheet();
-  const data = sheet.getDataRange().getValues();
-  
-  // Skip header row
-  for (let i = 1; i < data.length; i++) {
-    const rowEmail = String(data[i][CONFIG.COLUMNS.EMAIL]).toLowerCase().trim();
-    const rowTelegram = String(data[i][CONFIG.COLUMNS.TELEGRAM]).toLowerCase().trim();
-    
-    // Check email duplicate
-    if (rowEmail === email.toLowerCase()) {
-      return {
-        exists: true,
-        message: 'Email này đã được đăng ký. Vui lòng kiểm tra lại hoặc liên hệ support.'
-      };
-    }
-    
-    // Check telegram duplicate
-    if (rowTelegram === telegram.toLowerCase()) {
-      return {
-        exists: true,
-        message: 'Telegram này đã được đăng ký. Vui lòng kiểm tra lại hoặc liên hệ support.'
-      };
-    }
-  }
-  
-  return { exists: false };
-}
-
-/**
- * Add registration to sheet
- */
-function addRegistration(data) {
-  try {
-    const sheet = getOrCreateSheet();
-    
-    // LOG: Input data
-    logInfo('addRegistration', `Input data: ${JSON.stringify(data)}`);
-    
-    // Generate registration date (Vietnam timezone)
-    const registrationDate = Utilities.formatDate(
-      new Date(),
-      CONFIG.TIMEZONE,
-      'dd/MM/yyyy HH:mm:ss'
-    );
-    
-    // Prepare row data
-    const rowData = [
-      registrationDate,              // A: Ngày đăng ký
-      data.fullName,                 // B: Họ & Tên
-      data.telegram,                 // C: Telegram
-      data.email,                    // D: Email
-      data.source,                   // E: Nguồn
-      CONFIG.DEFAULT_STATUS          // F: Trạng thái
-    ];
-    
-    // LOG: Row data before insert
-    logInfo('addRegistration', `Row data: ${JSON.stringify(rowData)}`);
-    
-    // Append to sheet
-    sheet.appendRow(rowData);
-    const lastRow = sheet.getLastRow();
-    
-    // LOG: After insert
-    logInfo('addRegistration', `Inserted at row: ${lastRow}`);
-    
-    // Format the new row
-    const rowRange = sheet.getRange(lastRow, 1, 1, rowData.length);
-    rowRange.setHorizontalAlignment('left');
-    
-    // LOG: Verify what was written
-    const writtenData = sheet.getRange(lastRow, 1, 1, rowData.length).getValues()[0];
-    logInfo('addRegistration', `Written to sheet: ${JSON.stringify(writtenData)}`);
-    
-    return {
-      success: true,
-      rowNumber: lastRow
-    };
-    
-  } catch (error) {
-    logError('addRegistration', error);
-    return {
-      success: false,
-      error: error.message
-    };
-  }
-}
-
-/**
- * Update user status in sheet (NEW - for bot integration)
- * Tìm user theo EMAIL và cập nhật trạng thái
- */
-function updateUserStatus(email, newStatus) {
-  try {
-    const sheet = getOrCreateSheet();
-    const data = sheet.getDataRange().getValues();
-    
-    const emailLower = email.toLowerCase().trim();
-    logInfo('updateUserStatus', `Searching for email: ${emailLower}, new status: ${newStatus}`);
-    logInfo('updateUserStatus', `Total rows in sheet: ${data.length}`);
-    
-    // Find user by email (skip header row)
-    for (let i = 1; i < data.length; i++) {
-      const rowEmail = String(data[i][CONFIG.COLUMNS.EMAIL]).toLowerCase().trim();
-      
-      logInfo('updateUserStatus', `Row ${i}: Comparing "${rowEmail}" with "${emailLower}"`);
-      
-      if (rowEmail === emailLower) {
-        // Update status column (F: Trạng thái)
-        const statusCell = sheet.getRange(i + 1, CONFIG.COLUMNS.STATUS + 1);
-        const oldStatus = statusCell.getValue();
-        statusCell.setValue(newStatus);
+        // Send to Google Sheet theo format của google_apps_script_FINAL.js
+        const formData = new FormData();
+        formData.append('name', fullName);        // Tên field theo CONFIG.COLUMNS
+        formData.append('telegram', telegram);
+        formData.append('email', email);
+        formData.append('source', 'Landing Page Elirox');
         
-        logInfo('updateUserStatus', `✅ Updated row ${i + 1}: ${oldStatus} -> ${newStatus}`);
+        console.log('Sending data to:', SHEET_URL);
+        console.log('Data:', { name: fullName, telegram, email });
         
-        return {
-          success: true,
-          message: `Cập nhật trạng thái thành công cho ${email}`
-        };
-      }
+        const response = await fetch(SHEET_URL, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors'  // Google Apps Script yêu cầu no-cors
+        });
+        
+        // no-cors mode không trả về response, assume success
+        showMessage('✅ Đăng ký thành công! Đang chuyển hướng...', 'success');
+        
+        // Redirect after 2 seconds
+        setTimeout(() => {
+            window.location.href = AFFILIATE_LINK;
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        // Vẫn redirect vì no-cors mode không cho phép đọc response
+        showMessage('✅ Đăng ký đã được gửi! Đang chuyển hướng...', 'success');
+        setTimeout(() => {
+            window.location.href = AFFILIATE_LINK;
+        }, 2000);
     }
-    
-    // Not found
-    logInfo('updateUserStatus', `❌ Email not found: ${emailLower}`);
-    return {
-      success: false,
-      message: `Không tìm thấy user với email: ${email}`
-    };
-    
-  } catch (error) {
-    logError('updateUserStatus', error);
-    return {
-      success: false,
-      message: `Lỗi khi cập nhật: ${error.message}`
-    };
-  }
-}
+});
+</script>
 
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
-
-/**
- * Create standardized JSON response
- */
-function createResponse(success, message, data = null) {
-  const response = {
-    success: success,
-    status: success ? 'success' : 'error',
-    message: message,
-    timestamp: new Date().toISOString()
-  };
-  
-  if (data) {
-    response.data = data;
-  }
-  
-  return ContentService
-    .createTextOutput(JSON.stringify(response))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-/**
- * Log information
- */
-function logInfo(functionName, message) {
-  console.log(`[INFO] ${functionName}: ${message}`);
-  Logger.log(`[INFO] ${functionName}: ${message}`);
-}
-
-/**
- * Log error
- */
-function logError(functionName, error) {
-  console.error(`[ERROR] ${functionName}: ${error.message || error}`);
-  Logger.log(`[ERROR] ${functionName}: ${error.message || error}`);
-}
-
-// ============================================
-// ADMIN FUNCTIONS (Optional - for manual testing)
-// ============================================
-
-/**
- * Test function - Add sample data
- */
-function testAddSample() {
-  const testData = {
-    fullName: 'Nguyễn Văn Test',
-    telegram: '@testuser',
-    email: 'test' + Date.now() + '@example.com',
-    source: 'Manual Test'
-  };
-  
-  const result = addRegistration(testData);
-  Logger.log('Test result: ' + JSON.stringify(result));
-}
-
-/**
- * Test function - Update status
- */
-function testUpdateStatus() {
-  const result = updateUserStatus('mettatuan@gmail.com', 'Approved');
-  Logger.log('Update result: ' + JSON.stringify(result));
-}
-
-/**
- * Get all registrations (for debugging)
- */ 
-function getAllRegistrations() {
-  const sheet = getOrCreateSheet();
-  const data = sheet.getDataRange().getValues();
-  
-  Logger.log('Total rows: ' + (data.length - 1)); // Exclude header
-  
-  for (let i = 1; i < Math.min(6, data.length); i++) { // Show first 5 rows
-    Logger.log(`Row ${i}: ${JSON.stringify(data[i])}`);
-  }
-}
-
-/**
- * Clear all data (DANGEROUS - use carefully)
- */
-function clearAllData() {
-  const ui = SpreadsheetApp.getUi();
-  const response = ui.alert(
-    'Xác nhận xóa dữ liệu',
-    'Bạn có chắc muốn xóa TẤT CẢ dữ liệu? Hành động này KHÔNG THỂ hoàn tác!',
-    ui.ButtonSet.YES_NO
-  );
-  
-  if (response === ui.Button.YES) {
-    const sheet = getOrCreateSheet();
-    const lastRow = sheet.getLastRow();
-    
-    if (lastRow > 1) {
-      sheet.deleteRows(2, lastRow - 1);
-      ui.alert('Đã xóa ' + (lastRow - 1) + ' dòng dữ liệu');
-    } else {
-      ui.alert('Không có dữ liệu để xóa');
-    }
-  }
-}
-
-// ============================================
-// DEPLOYMENT INSTRUCTIONS
-// ============================================
-
-/**
- * HƯỚNG DẪN DEPLOY:
- * 
- * 1. Mở Google Sheet của bạn
- * 2. Extensions → Apps Script
- * 3. Xóa code mẫu, paste toàn bộ code này
- * 4. Click "Deploy" → "New deployment"
- * 5. Cài đặt:
- *    - Type: Web app
- *    - Execute as: Me
- *    - Who has access: Anyone
- * 6. Click "Deploy"
- * 7. Copy URL web app → Cập nhật vào frontend & bot
- * 
- * TEST REGISTRATION:
- * curl -X POST "YOUR_SCRIPT_URL" \
- *   -H "Content-Type: application/json" \
- *   -d '{
- *     "fullName": "Test User",
- *     "telegram": "@testuser",
- *     "email": "test@example.com",
- *     "source": "Web Form"
- *   }'
- * 
- * TEST UPDATE STATUS:
- * curl -X POST "YOUR_SCRIPT_URL" \
- *   -H "Content-Type: application/json" \
- *   -d '{
- *     "action": "update_status",
- *     "email": "mettatuan@gmail.com",
- *     "status": "Approved",
- *     "telegram_id": "1299465308"
- *   }'
- */
+</body>
+</html>
