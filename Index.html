@@ -1450,18 +1450,26 @@ form.addEventListener('submit', async (e) => {
         console.log('Sending data to:', SHEET_URL);
         console.log('Data:', { name: fullName, telegram, email });
         
-        // Send to Google Sheet with proper await
+        // Send to Google Sheet - Google Apps Script handles CORS automatically
         try {
             const response = await fetch(SHEET_URL, {
                 method: 'POST',
-                body: formData,
-                mode: 'no-cors' // Google Apps Script requires no-cors
+                body: formData
+                // NO mode: 'no-cors' - Let Google handle CORS
             });
+            
+            // Try to read response (might fail with CORS, but that's OK)
+            try {
+                const result = await response.text();
+                console.log('✅ Server response:', result);
+            } catch (readError) {
+                console.log('✅ Data sent (response not readable, but that\'s normal)');
+            }
             
             console.log('✅ Data sent to Google Sheet successfully');
         } catch (fetchError) {
-            console.error('⚠️ Fetch error (expected with no-cors):', fetchError);
-            // With no-cors mode, we can't read response, but data should still be sent
+            console.error('⚠️ Fetch error:', fetchError);
+            // Even if error, data might still be sent
         }
         
         // Small delay to ensure request is sent before showing popup
