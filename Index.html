@@ -1323,6 +1323,9 @@ const form = document.getElementById('registerForm');
 const submitBtn = document.getElementById('submitBtn');
 const formMessage = document.getElementById('formMessage');
 
+// Store user email for deep link
+let userEmail = '';
+
 console.log('Modal elements:', { modal, openFormBtn, closeModal });
 
 // Open modal function
@@ -1470,6 +1473,17 @@ form.addEventListener('submit', async (e) => {
         
         // Small delay to ensure request is sent before showing popup
         await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Store email for deep link
+        userEmail = email;
+        
+        // Update Telegram button with deep link
+        const telegramBtn = document.querySelector('.btn-telegram');
+        if (telegramBtn) {
+            const encodedEmail = encodeURIComponent(email);
+            telegramBtn.href = `https://t.me/EliroxBot?start=verify_${encodedEmail}`;
+            console.log('📱 Telegram deep link created:', telegramBtn.href);
+        }
         
         // Show success popup
         console.log('Form submitted, showing success popup...');
