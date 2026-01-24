@@ -15,9 +15,9 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
-            color: #1F2937;
+            color: #E5E7EB;
             line-height: 1.6;
-            background: #F9FAFB;
+            background: #0F172A;
         }
         
         .container {
@@ -28,12 +28,33 @@
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
             color: white;
             padding: 80px 0 100px;
-            text-align: center;
             position: relative;
             overflow: hidden;
+        }
+        
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+        
+        .hero-left {
+            text-align: left;
+        }
+        
+        .hero-right {
+            text-align: center;
+        }
+        
+        .hero-image {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
         
         .hero::before {
@@ -85,19 +106,72 @@
         }
         
         .cta-box {
-            background: white;
-            color: #1F2937;
+            background: #1E293B;
+            color: white;
             padding: 40px;
             border-radius: 16px;
             max-width: 600px;
             margin: 0 auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid #334155;
         }
         
         .cta-box h3 {
             font-size: 24px;
             margin-bottom: 16px;
-            color: #1E40AF;
+            color: #A78BFA;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #E5E7EB;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #0F172A;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #A78BFA;
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
+        }
+        
+        .form-group input::placeholder {
+            color: #64748B;
+        }
+        
+        .form-message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .form-message.success {
+            background: #065F46;
+            color: #D1FAE5;
+        }
+        
+        .form-message.error {
+            background: #991B1B;
+            color: #FEE2E2;
         }
         
         .value-tag {
@@ -160,7 +234,7 @@
         .section-title {
             font-size: 36px;
             font-weight: 800;
-            color: #111827;
+            color: #F3F4F6;
             margin-bottom: 16px;
         }
         
@@ -179,11 +253,11 @@
         }
         
         .problem-card {
-            background: white;
+            background: #1E293B;
             padding: 32px;
             border-radius: 12px;
             border-left: 4px solid #EF4444;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
         
         .problem-icon {
@@ -195,7 +269,7 @@
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 12px;
-            color: #111827;
+            color: #F3F4F6;
         }
         
         .problem-card p {
@@ -225,14 +299,15 @@
         
         /* Solution Section */
         .solution-section {
-            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
         }
         
         .solution-box {
-            background: white;
+            background: #1E293B;
             padding: 48px;
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 1px solid #334155;
         }
         
         .solution-header {
@@ -243,7 +318,7 @@
         .solution-header h2 {
             font-size: 32px;
             font-weight: 800;
-            color: #1E40AF;
+            color: #A78BFA;
             margin-bottom: 16px;
         }
         
@@ -253,11 +328,11 @@
         }
         
         .scanner-preview {
-            background: #F3F4F6;
+            background: #0F172A;
             padding: 40px;
             border-radius: 12px;
             margin-bottom: 32px;
-            border: 2px solid #3B82F6;
+            border: 2px solid #6366F1;
         }
         
         .scanner-row {
@@ -369,7 +444,7 @@
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 12px;
-            color: #111827;
+            color: #F3F4F6;
         }
         
         .benefit-card p {
@@ -379,7 +454,7 @@
         
         /* How to Get Section */
         .how-to-section {
-            background: white;
+            background: #1E293B;
         }
         
         .steps {
@@ -392,15 +467,15 @@
             gap: 24px;
             margin-bottom: 32px;
             padding: 24px;
-            background: #F9FAFB;
+            background: #0F172A;
             border-radius: 12px;
-            border-left: 4px solid #3B82F6;
+            border-left: 4px solid #8B5CF6;
         }
         
         .step-number {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -415,7 +490,7 @@
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 8px;
-            color: #111827;
+            color: #F3F4F6;
         }
         
         .step-content p {
@@ -425,7 +500,7 @@
         .step-link {
             display: inline-block;
             margin-top: 8px;
-            color: #3B82F6;
+            color: #A78BFA;
             font-weight: 600;
             text-decoration: none;
             font-size: 16px;
@@ -475,10 +550,11 @@
         }
         
         .testimonial {
-            background: white;
+            background: #1E293B;
             padding: 32px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: 1px solid #334155;
         }
         
         .testimonial-stars {
@@ -489,14 +565,14 @@
         
         .testimonial-text {
             font-style: italic;
-            color: #374151;
+            color: #D1D5DB;
             margin-bottom: 16px;
             line-height: 1.7;
         }
         
         .testimonial-author {
             font-weight: 700;
-            color: #111827;
+            color: #F3F4F6;
         }
         
         .testimonial-role {
@@ -506,7 +582,7 @@
         
         /* Final CTA Section */
         .final-cta {
-            background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
             color: white;
             padding: 80px 0;
             text-align: center;
@@ -575,6 +651,14 @@
                 font-size: 16px;
             }
             
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-left {
+                text-align: center;
+            }
+            
             .cta-box {
                 padding: 24px;
             }
@@ -599,26 +683,53 @@
 <!-- Hero Section -->
 <section class="hero">
     <div class="container">
-        <div class="hero-content">
-            <div class="hero-badge">🎁 Miễn phí Demo $10,000 - Không cần nạp tiền thật</div>
-            <h1>
-                BOT <span class="highlight">DCA & GRID</span> Tự Động<br>
-                Giao Dịch 24/7 - Không Cần Code
-            </h1>
-            <p>
-                Elirox Bot tự động trade theo chiến lược DCA hoặc GRID.<br>
-                Không cần kinh nghiệm. Không cần ngồi xem chart. Bot làm hết.
-            </p>
+        <div class="hero-grid">
+            <div class="hero-left">
+                <div class="hero-badge">🎁 Miễn phí Demo $10,000 - Không cần nạp tiền thật</div>
+                <h1>
+                    BOT <span class="highlight">DCA & GRID</span> Tự Động<br>
+                    Giao Dịch 24/7 - Không Cần Code
+                </h1>
+                <p>
+                    Elirox Bot tự động trade theo chiến lược DCA hoặc GRID.<br>
+                    Không cần kinh nghiệm. Không cần ngồi xem chart. Bot làm hết.
+                </p>
+            </div>
             
-            <div class="cta-box">
-                <h3>🚀 Bắt Đầu Với Elirox Bot</h3>
-                <div class="value-tag">Tặng Demo $10,000 + Dashboard Scanner ($500)</div>
-                <a href="https://click.eliroxlink.com/U2uaaCBz" class="btn-cta" target="_blank">
-                    Dùng Thử Miễn Phí Ngay <span class="btn-cta-arrow">→</span>
-                </a>
-                <div class="trust-line">
-                    ✅ Không cần nạp tiền · <strong>Chạy thử Demo 100%</strong> · Scanner tặng kèm
+            <div class="hero-right">
+                <img src="https://github.com/mettatuan/elirox/blob/main/eliroxbot.jpg?raw=true" alt="Elirox Bot Dashboard" class="hero-image">
+            </div>
+        </div>
+        
+        <div class="cta-box" style="margin-top: 48px;">
+            <h3>🚀 Đăng Ký Nhận Demo $10,000 + Scanner Miễn Phí</h3>
+            <div class="value-tag">Trị giá $10,500 - Miễn phí 100%</div>
+            
+            <div id="formMessage" class="form-message" style="display: none;"></div>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="fullName">👤 Họ & Tên</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Nguyễn Văn A" required>
                 </div>
+                
+                <div class="form-group">
+                    <label for="telegram">💬 Telegram Username</label>
+                    <input type="text" id="telegram" name="telegram" placeholder="@username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">📧 Email</label>
+                    <input type="email" id="email" name="email" placeholder="email@example.com" required>
+                </div>
+                
+                <button type="submit" class="btn-cta" id="submitBtn">
+                    Đăng Ký Ngay - Nhận Demo $10K <span class="btn-cta-arrow">→</span>
+                </button>
+            </form>
+            
+            <div class="trust-line">
+                ✅ 100% miễn phí · <strong>Không cần thẻ tín dụng</strong> · Nhận ngay sau 30s
             </div>
         </div>
     </div>
@@ -871,6 +982,77 @@
         <p>&copy; 2026 EliroxBot. Công cụ hỗ trợ trader thông minh hơn.</p>
     </div>
 </footer>
+
+<script>
+// Google Sheet Integration
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyEQhxAlHjjvGbL_o7EbdOkmwXtzMQCwp-HZJmwiPOtBbrgSQP4Ijhuk3Wek3BF_BCy/exec';
+const AFFILIATE_LINK = 'https://click.eliroxlink.com/U2uaaCBz';
+
+const form = document.getElementById('registerForm');
+const submitBtn = document.getElementById('submitBtn');
+const formMessage = document.getElementById('formMessage');
+
+function showMessage(message, type) {
+    formMessage.textContent = message;
+    formMessage.className = `form-message ${type}`;
+    formMessage.style.display = 'block';
+}
+
+function hideMessage() {
+    formMessage.style.display = 'none';
+}
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideMessage();
+    
+    // Get form values
+    const fullName = document.getElementById('fullName').value.trim();
+    const telegram = document.getElementById('telegram').value.trim();
+    const email = document.getElementById('email').value.trim();
+    
+    // Validate
+    if (!fullName || !telegram || !email) {
+        showMessage('❌ Vui lòng điền đầy đủ thông tin!', 'error');
+        return;
+    }
+    
+    // Disable button
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ Đang xử lý...';
+    
+    try {
+        // Send to Google Sheet
+        const formData = new FormData();
+        formData.append('fullName', fullName);
+        formData.append('telegram', telegram);
+        formData.append('email', email);
+        formData.append('timestamp', new Date().toISOString());
+        formData.append('source', 'Landing Page');
+        
+        const response = await fetch(SHEET_URL, {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (response.ok) {
+            showMessage('✅ Đăng ký thành công! Đang chuyển hướng...', 'success');
+            
+            // Redirect after 2 seconds
+            setTimeout(() => {
+                window.location.href = AFFILIATE_LINK;
+            }, 2000);
+        } else {
+            throw new Error('Failed to submit');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showMessage('❌ Có lỗi xảy ra. Vui lòng thử lại!', 'error');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Đăng Ký Ngay - Nhận Demo $10K <span class="btn-cta-arrow">→</span>';
+    }
+});
+</script>
 
 </body>
 </html>
