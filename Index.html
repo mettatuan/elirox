@@ -173,12 +173,15 @@
             background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(8px);
             animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .modal.active {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
+            padding: 20px 0;
         }
         
         .modal-content {
@@ -188,10 +191,10 @@
             border-radius: 16px;
             max-width: 500px;
             width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
+            margin: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
             animation: slideUp 0.3s ease;
+            position: relative;
         }
         
         .modal-close {
@@ -321,12 +324,15 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.9);
             backdrop-filter: blur(12px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .success-popup.active {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
+            padding: 20px 0;
         }
         
         .success-popup-content {
@@ -336,9 +342,11 @@
             border-radius: 20px;
             max-width: 600px;
             width: 90%;
+            margin: auto;
             text-align: center;
             box-shadow: 0 25px 70px rgba(139, 92, 246, 0.3);
             animation: slideUp 0.4s ease;
+            position: relative;
         }
         
         .success-icon {
@@ -926,8 +934,24 @@
                 font-size: 32px;
             }
             
+            .modal {
+                padding: 10px 0;
+            }
+            
             .modal-content {
                 padding: 32px 24px;
+                width: 95%;
+                margin: 10px auto;
+            }
+            
+            .success-popup {
+                padding: 10px 0;
+            }
+            
+            .success-popup-content {
+                padding: 32px 20px;
+                width: 95%;
+                margin: 10px auto;
             }
             
             .problem-grid,
