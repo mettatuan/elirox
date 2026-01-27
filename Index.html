@@ -335,6 +335,63 @@
             padding: 20px 0;
         }
         
+        /* Loading Popup */
+        .loading-popup {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(12px);
+        }
+        
+        .loading-popup.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loading-popup-content {
+            background: #0F172A;
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            padding: 48px 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 70px rgba(139, 92, 246, 0.3);
+            animation: slideUp 0.4s ease;
+        }
+        
+        .loading-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+        
+        .loading-description {
+            color: #CBD5E1;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
         .success-popup-content {
             background: #0F172A;
             border: 2px solid rgba(139, 92, 246, 0.4);
@@ -1090,6 +1147,19 @@
     </div>
 </div>
 
+<!-- Loading Popup -->
+<div id="loadingPopup" class="loading-popup">
+    <div class="loading-popup-content">
+        <div class="loading-icon">⏳</div>
+        <h2 class="loading-title">Đang Xử Lý...</h2>
+        <p class="loading-description">
+            Đang lưu thông tin và chuyển hướng bạn<br>
+            đến trang đăng ký Elirox.<br><br>
+            <strong>Vui lòng đợi trong giây lát...</strong>
+        </p>
+    </div>
+</div>
+
 <!-- Problem Section -->
 <section class="section">
     <div class="container">
@@ -1431,6 +1501,7 @@ function hideMessage() {
 
 // Success popup controls
 const successPopup = document.getElementById('successPopup');
+const loadingPopup = document.getElementById('loadingPopup');
 
 function showSuccessPopup() {
     console.log('Showing success popup...');
@@ -1444,6 +1515,21 @@ function showSuccessPopup() {
         console.log('Success popup opened');
     } else {
         console.error('Success popup not found!');
+    }
+}
+
+function showLoadingPopup() {
+    console.log('Showing loading popup...');
+    // Close register modal first
+    closeModalFunc();
+    
+    // Show loading popup
+    if (loadingPopup) {
+        loadingPopup.classList.add('active');
+        loadingPopup.style.display = 'flex';
+        console.log('Loading popup opened');
+    } else {
+        console.error('Loading popup not found!');
     }
 }
 
@@ -1495,8 +1581,11 @@ form.addEventListener('submit', async (e) => {
             console.log('📋 Data was still sent (no-cors mode prevents reading response)');
         }
         
-        // Small delay to ensure request is sent before redirect
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Show loading popup
+        showLoadingPopup();
+        
+        // Wait 2 seconds before redirect (let user see the message)
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
         console.log('✅ Form submitted successfully, redirecting to affiliate link...');
         
@@ -1507,6 +1596,13 @@ form.addEventListener('submit', async (e) => {
         console.error('Error:', error);
         // Still redirect even on error (data was sent in no-cors mode)
         console.log('⚠️ Error occurred but redirecting anyway...');
+        
+        // Show loading popup
+        showLoadingPopup();
+        
+        // Wait 2 seconds before redirect
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
         window.location.href = AFFILIATE_LINK;
     }
 });
