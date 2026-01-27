@@ -1156,7 +1156,7 @@
             Đang chuyển bạn đến trang <strong>tải APP Elirox</strong><br><br>
             ✅ <strong>Dùng thử MIỄN PHÍ 30 ngày</strong><br>
             ✅ Nhận Demo $10,000<br>
-            ✅ Dashboard Scanner miễn phí - Kết nối <strong>@EliroxBot</strong> để nhận chỉ báo Scanner trị giá $500 FREE<br><br>
+            ✅ Dashboard Scanner 500$ - Kết nối <strong>@EliroxBot</strong> để nhận FREE<br><br>
             <strong>Vui lòng đợi trong giây lát...</strong>
         </p>
     </div>
@@ -1550,63 +1550,41 @@ form.addEventListener('submit', async (e) => {
         return;
     }
     
-    // Disable button
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '⏳ Đang xử lý...';
+    // Show loading popup IMMEDIATELY (no waiting)
+    showLoadingPopup();
     
-    try {
-        // Prepare data for Google Sheet using URLSearchParams (form-urlencoded)
-        // This is what Google Apps Script expects in e.parameter
-        const formData = new URLSearchParams();
-        formData.append('name', fullName);
-        formData.append('telegram', telegram);
-        formData.append('email', email);
-        formData.append('source', 'Landing Page Elirox');
-        
-        console.log('Sending data to:', SHEET_URL);
-        console.log('Data:', { name: fullName, telegram, email });
-        
-        // Send to Google Sheet with no-cors mode (required for Google Apps Script without proper CORS)
-        try {
-            const response = await fetch(SHEET_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formData.toString(),
-                mode: 'no-cors' // Required to bypass CORS errors
-            });
-            
-            console.log('✅ Data sent to Google Sheet (no-cors mode)');
-        } catch (fetchError) {
-            console.error('⚠️ Fetch error:', fetchError);
-            console.log('📋 Data was still sent (no-cors mode prevents reading response)');
-        }
-        
-        // Show loading popup
-        showLoadingPopup();
-        
-        // Wait 2 seconds before redirect (let user see the message)
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        console.log('✅ Form submitted successfully, redirecting to affiliate link...');
-        
-        // Redirect to affiliate link
-        window.location.href = AFFILIATE_LINK;
-        
-    } catch (error) {
-        console.error('Error:', error);
-        // Still redirect even on error (data was sent in no-cors mode)
-        console.log('⚠️ Error occurred but redirecting anyway...');
-        
-        // Show loading popup
-        showLoadingPopup();
-        
-        // Wait 2 seconds before redirect
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        window.location.href = AFFILIATE_LINK;
-    }
+    // Prepare data for Google Sheet using URLSearchParams (form-urlencoded)
+    const formData = new URLSearchParams();
+    formData.append('name', fullName);
+    formData.append('telegram', telegram);
+    formData.append('email', email);
+    formData.append('source', 'Landing Page Elirox');
+    
+    console.log('Sending data to:', SHEET_URL);
+    console.log('Data:', { name: fullName, telegram, email });
+    
+    // Send to Google Sheet in BACKGROUND (no await - fire and forget)
+    fetch(SHEET_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString(),
+        mode: 'no-cors' // Required to bypass CORS errors
+    }).then(() => {
+        console.log('✅ Data sent to Google Sheet (background)');
+    }).catch((fetchError) => {
+        console.error('⚠️ Fetch error:', fetchError);
+        console.log('📋 Data was still sent (no-cors mode prevents reading response)');
+    });
+    
+    // Wait 2 seconds then redirect (user sees loading popup immediately)
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    console.log('✅ Redirecting to affiliate link...');
+    
+    // Redirect to affiliate link
+    window.location.href = AFFILIATE_LINK;
 });
 </script>
 
