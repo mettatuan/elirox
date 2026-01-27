@@ -1034,8 +1034,8 @@
             </div>
             
             <div class="form-group">
-                <label for="telegram">💬 Telegram Username</label>
-                <input type="text" id="telegram" name="telegram" placeholder="@username" required>
+                <label for="telegram">💬 Telegram Username (Không bắt buộc)</label>
+                <input type="text" id="telegram" name="telegram" placeholder="@username">
             </div>
             
             <div class="form-group">
@@ -1456,9 +1456,9 @@ form.addEventListener('submit', async (e) => {
     const telegram = document.getElementById('telegram').value.trim();
     const email = document.getElementById('email').value.trim();
     
-    // Validate
-    if (!fullName || !telegram || !email) {
-        showMessage('❌ Vui lòng điền đầy đủ thông tin!', 'error');
+    // Validate (chỉ bắt buộc họ tên và email)
+    if (!fullName || !email) {
+        showMessage('❌ Vui lòng điền đầy đủ Họ & Tên và Email!', 'error');
         return;
     }
     
@@ -1495,38 +1495,19 @@ form.addEventListener('submit', async (e) => {
             console.log('📋 Data was still sent (no-cors mode prevents reading response)');
         }
         
-        // Small delay to ensure request is sent before showing popup
+        // Small delay to ensure request is sent before redirect
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        // Store email for deep link
-        userEmail = email;
+        console.log('✅ Form submitted successfully, redirecting to affiliate link...');
         
-        // Update Telegram button with deep link
-        const telegramBtn = document.querySelector('.btn-telegram');
-        if (telegramBtn) {
-            const encodedEmail = encodeURIComponent(email);
-            telegramBtn.href = `https://t.me/EliroxBot?start=verify_${encodedEmail}`;
-            console.log('📱 Telegram deep link created:', telegramBtn.href);
-        }
-        
-        // Show success popup
-        console.log('Form submitted, showing success popup...');
-        showSuccessPopup();
-        
-        // Reset form for next use
-        form.reset();
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Đăng Ký Ngay - Nhận Demo $10K <span class="btn-cta-arrow">→</span>';
+        // Redirect to affiliate link
+        window.location.href = AFFILIATE_LINK;
         
     } catch (error) {
         console.error('Error:', error);
-        // Still show success popup even on error
-        showSuccessPopup();
-        
-        // Reset form
-        form.reset();
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Đăng Ký Ngay - Nhận Demo $10K <span class="btn-cta-arrow">→</span>';
+        // Still redirect even on error (data was sent in no-cors mode)
+        console.log('⚠️ Error occurred but redirecting anyway...');
+        window.location.href = AFFILIATE_LINK;
     }
 });
 </script>
